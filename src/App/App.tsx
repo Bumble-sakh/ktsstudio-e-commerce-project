@@ -1,8 +1,26 @@
 import React from 'react';
-import './App.module.scss';
+
+import Header from '@components/Header';
+import About from '@pages/About';
+import Categories from '@pages/Categories';
+import Product from '@pages/Product';
+import Products from '@pages/Products';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+
+import styles from './App.module.scss';
 
 function App() {
-  return <div className="app"></div>;
+  return (
+    <BrowserRouter>
+      <Header />
+      <Routes>
+        <Route path="/" element={<Products />} />
+        <Route path="/product/:id" element={<Product />} />
+        <Route path="/categories" element={<Categories />} />
+        <Route path="/about" element={<About />} />
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
 export default App;

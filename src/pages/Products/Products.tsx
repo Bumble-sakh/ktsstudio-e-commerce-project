@@ -91,9 +91,8 @@ const Products = () => {
 
         <ul className={styles.cards}>
           {products.slice(offset, offset + limit).map((product) => (
-            <Link to={`${ROUTES.product}/${product.id}`}>
+            <Link to={`${ROUTES.product}/${product.id}`} key={product.id}>
               <Card
-                key={product.id}
                 image={product.images[0]}
                 title={product.title}
                 subtitle={product.description}

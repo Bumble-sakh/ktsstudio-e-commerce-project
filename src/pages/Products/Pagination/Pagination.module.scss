@@ -1,0 +1,39 @@
+@use '@styles/colors.scss';
+
+.pagination {
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+  margin-bottom: 50px;
+}
+
+.pages {
+  display: flex;
+  flex-direction: row;
+}
+
+.page,
+.dots,
+.prev,
+.next {
+  width: 38px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.page {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 180%;
+  color: colors.$title;
+  border: 1.5px solid colors.$lightgrey;
+}
+
+.dots {
+  align-self: flex-end;
+  cursor: default;
+}

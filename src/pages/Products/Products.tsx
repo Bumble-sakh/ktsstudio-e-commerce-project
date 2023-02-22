@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react';
 
 import Card from '@components/Card';
+import PAGINATION from '@config/pagination';
+import ROUTES from '@config/routes';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 import Filter from './Filter';
 import Pagination from './Pagination';
@@ -28,6 +31,8 @@ const Products = () => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [category, setCategory] = useState<Category | null>(null);
   const [searchProperty, setSearchProperty] = useState<string | null>(null);
+  const [offset, setOffset] = useState(0);
+  const limit = PAGINATION.limit;
 
   useEffect(() => {
     const fetch = async () => {
@@ -85,19 +90,26 @@ const Products = () => {
         </h2>
 
         <ul className={styles.cards}>
-          {products.map((product) => (
-            <Card
-              key={product.id}
-              image={product.images[0]}
-              title={product.title}
-              subtitle={product.description}
-              content={`$${product.price}`}
-              category={product.category.name}
-            />
+          {products.slice(offset, offset + limit).map((product) => (
+            <Link to={`${ROUTES.product}/${product.id}`}>
+              <Card
+                key={product.id}
+                image={product.images[0]}
+                title={product.title}
+                subtitle={product.description}
+                content={`$${product.price}`}
+                category={product.category.name}
+              />
+            </Link>
           ))}
         </ul>
 
-        <Pagination />
+        <Pagination
+          offset={offset}
+          limit={limit}
+          setOffset={setOffset}
+          total={products.length}
+        />
       </div>
     </section>
   );

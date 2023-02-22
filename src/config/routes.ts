@@ -1,6 +1,6 @@
 const ROUTES = {
   index: '/',
-  product: '/product/:id',
+  product: '/product',
   categories: '/categories',
   about: '/about',
   all: '*',

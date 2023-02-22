@@ -13,7 +13,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path={ROUTES.index} element={<Layout />}>
-          <Route path={ROUTES.product} element={<Product />} />
+          <Route path={`${ROUTES.product}/:id`} element={<Product />} />
           <Route path={ROUTES.categories} element={<Categories />} />
           <Route path={ROUTES.about} element={<About />} />
           <Route

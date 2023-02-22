@@ -1,9 +1,9 @@
 import React from 'react';
 
+import Loader, { LoaderSize } from '@components/Loader';
 import classNames from 'classnames';
 
 import styles from './Button.module.scss';
-import { Loader, LoaderSize } from '../Loader/Loader';
 
 export type ButtonProps = React.PropsWithChildren<{
   loading?: boolean;

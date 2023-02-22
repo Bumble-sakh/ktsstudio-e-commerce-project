@@ -1,0 +1,60 @@
+@use '@styles/colors.scss';
+
+.filter {
+  width: 190px;
+  position: relative;
+
+  &_disabled {
+    pointer-events: none;
+    opacity: 0.7;
+  }
+
+  &__select {
+    height: 84px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 12px;
+    padding: 27px;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 180%;
+    color: colors.$title;
+    background-color: colors.$white;
+    box-sizing: border-box;
+    box-shadow: 0px 4px 20px rgba(175, 173, 181, 0.2);
+  }
+
+  &__options {
+    width: 190px;
+    position: absolute;
+    z-index: 10;
+    top: 96px;
+    left: 0;
+    background-color: colors.$white;
+    box-sizing: border-box;
+    box-shadow: 0px 4px 120px rgba(175, 173, 181, 0.15);
+  }
+}
+
+.list {
+  margin: 0;
+  padding: 0;
+
+  &__item {
+    cursor: pointer;
+    list-style: none;
+    padding: 16px;
+    font-family: 'Eudoxus Sans', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 18px;
+    color: colors.$black;
+
+    &_selected {
+      color: colors.$green;
+    }
+  }
+}

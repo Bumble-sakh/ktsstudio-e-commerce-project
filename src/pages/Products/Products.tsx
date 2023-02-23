@@ -49,7 +49,7 @@ const Products = () => {
       });
 
       setProducts(result.data);
-      // setProductsIsLoading(false);
+      setProductsIsLoading(false);
     };
 
     fetch();

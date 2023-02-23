@@ -23,7 +23,7 @@ const Loader: React.FC<LoaderProps> = ({
 }) => {
   const classes = classNames(
     styles.loader,
-    `${styles.loader}_${size}`,
+    styles[`loader_${size}`],
     className
   );
 

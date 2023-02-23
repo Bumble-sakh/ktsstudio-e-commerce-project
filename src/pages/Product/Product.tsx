@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 
 import Button from '@components/Button';
 import Card from '@components/Card';
+import Loader, { LoaderSize } from '@components/Loader';
 import ROUTES from '@config/routes';
 import { Product as ProductType } from '@pages/Products';
 import axios from 'axios';
@@ -14,6 +15,8 @@ const Product = () => {
   const { id } = useParams();
   const [product, setProduct] = useState<ProductType | null>(null);
   const [related, setRelated] = useState<ProductType[]>([]);
+  const [productIsLoading, setProductIsLoading] = useState(true);
+  const [relatedIsLoading, setRelatedIsLoading] = useState(true);
 
   useEffect(() => {
     const fetch = async () => {
@@ -24,6 +27,7 @@ const Product = () => {
       });
 
       setProduct(result.data);
+      setProductIsLoading(false);
     };
 
     fetch();
@@ -42,6 +46,7 @@ const Product = () => {
         },
       });
       setRelated(result.data);
+      setRelatedIsLoading(false);
     };
 
     fetch();
@@ -50,37 +55,47 @@ const Product = () => {
   return (
     <section className={styles.section}>
       <div className={`${styles.section__wrapper} wrapper`}>
-        <div className={styles.product}>
-          {product && <Slider images={product.images} />}
+        {productIsLoading ? (
+          <Loader size={LoaderSize.l} />
+        ) : (
+          <div className={styles.product}>
+            {product && <Slider images={product.images} />}
 
-          <div className={styles.product__content}>
-            <div className={styles.product__title}>{product?.title}</div>
-            <div className={styles.product__subtitle}>
-              {product?.description}
-            </div>
-            <div className={styles.product__price}>{`$${product?.price}`}</div>
-            <div className={styles.product__buttons}>
-              <Button>Buy Now</Button>
-              <Button>Add to Cart</Button>
+            <div className={styles.product__content}>
+              <div className={styles.product__title}>{product?.title}</div>
+              <div className={styles.product__subtitle}>
+                {product?.description}
+              </div>
+              <div
+                className={styles.product__price}
+              >{`$${product?.price}`}</div>
+              <div className={styles.product__buttons}>
+                <Button>Buy Now</Button>
+                <Button>Add to Cart</Button>
+              </div>
             </div>
           </div>
-        </div>
+        )}
 
         <h2 className={styles.title}>Related Items</h2>
 
-        <ul className={styles.cards}>
-          {related.map((product) => (
-            <Link to={`${ROUTES.product}/${product.id}`} key={product.id}>
-              <Card
-                image={product.images[0]}
-                title={product.title}
-                subtitle={product.description}
-                content={`$${product.price}`}
-                category={product.category.name}
-              />
-            </Link>
-          ))}
-        </ul>
+        {relatedIsLoading ? (
+          <Loader size={LoaderSize.l} />
+        ) : (
+          <ul className={styles.cards}>
+            {related.map((product) => (
+              <Link to={`${ROUTES.product}/${product.id}`} key={product.id}>
+                <Card
+                  image={product.images[0]}
+                  title={product.title}
+                  subtitle={product.description}
+                  content={`$${product.price}`}
+                  category={product.category.name}
+                />
+              </Link>
+            ))}
+          </ul>
+        )}
       </div>
     </section>
   );

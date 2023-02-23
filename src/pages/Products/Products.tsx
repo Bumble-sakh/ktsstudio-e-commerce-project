@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import Card from '@components/Card';
+import Loader, { LoaderSize } from '@components/Loader';
 import PAGINATION from '@config/pagination';
 import ROUTES from '@config/routes';
 import axios from 'axios';
@@ -33,6 +34,7 @@ const Products = () => {
   const [searchProperty, setSearchProperty] = useState<string | null>(null);
   const [offset, setOffset] = useState(0);
   const limit = PAGINATION.limit;
+  const [productsIsLoading, setProductsIsLoading] = useState(true);
 
   useEffect(() => {
     const fetch = async () => {
@@ -47,6 +49,7 @@ const Products = () => {
       });
 
       setProducts(result.data);
+      // setProductsIsLoading(false);
     };
 
     fetch();
@@ -84,31 +87,37 @@ const Products = () => {
           />
         </div>
 
-        <h2 className={styles.total}>
-          Total Product
-          <span className={styles.total__count}>{products.length}</span>
-        </h2>
+        {productsIsLoading ? (
+          <Loader size={LoaderSize.l} />
+        ) : (
+          <>
+            <h2 className={styles.total}>
+              Total Product
+              <span className={styles.total__count}>{products.length}</span>
+            </h2>
 
-        <ul className={styles.cards}>
-          {products.slice(offset, offset + limit).map((product) => (
-            <Link to={`${ROUTES.product}/${product.id}`} key={product.id}>
-              <Card
-                image={product.images[0]}
-                title={product.title}
-                subtitle={product.description}
-                content={`$${product.price}`}
-                category={product.category.name}
-              />
-            </Link>
-          ))}
-        </ul>
+            <ul className={styles.cards}>
+              {products.slice(offset, offset + limit).map((product) => (
+                <Link to={`${ROUTES.product}/${product.id}`} key={product.id}>
+                  <Card
+                    image={product.images[0]}
+                    title={product.title}
+                    subtitle={product.description}
+                    content={`$${product.price}`}
+                    category={product.category.name}
+                  />
+                </Link>
+              ))}
+            </ul>
 
-        <Pagination
-          offset={offset}
-          limit={limit}
-          setOffset={setOffset}
-          total={products.length}
-        />
+            <Pagination
+              offset={offset}
+              limit={limit}
+              setOffset={setOffset}
+              total={products.length}
+            />
+          </>
+        )}
       </div>
     </section>
   );

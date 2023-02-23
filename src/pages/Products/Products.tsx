@@ -49,6 +49,7 @@ const Products = () => {
       });
 
       setProducts(result.data);
+      setOffset(0);
       setProductsIsLoading(false);
     };
 
@@ -111,12 +112,14 @@ const Products = () => {
               ))}
             </ul>
 
-            <Pagination
-              offset={offset}
-              limit={limit}
-              setOffset={setOffset}
-              total={products.length}
-            />
+            {products.length > limit && (
+              <Pagination
+                offset={offset}
+                limit={limit}
+                setOffset={setOffset}
+                total={products.length}
+              />
+            )}
           </>
         )}
       </div>

@@ -2,8 +2,10 @@ import { useState } from 'react';
 
 import next from '@assets/images/next.svg';
 import prev from '@assets/images/prev.svg';
+import classNames from 'classnames';
 
 import styles from './Pagination.module.scss';
+import { usePagination } from './usePagination';
 
 type PaginationProps = {
   offset: number;
@@ -18,49 +20,65 @@ const Pagination: React.FC<PaginationProps> = ({
   total,
   setOffset,
 }) => {
-  const [current, setCurrent] = useState(1);
+  const [currentPage, setCurrent] = useState(1);
   const totalPages = Math.ceil(total / limit);
-  const middle = Math.ceil(totalPages / 2);
+
+  const paginationRange = usePagination({
+    currentPage,
+    totalPages,
+  });
 
   const nextHandle = () => {
     setOffset(offset + limit);
-    setCurrent((prev) => prev + 1);
+    setCurrent((prev) => (prev + 1 < totalPages ? prev + 1 : totalPages));
   };
 
   const prevHandle = () => {
     setOffset(offset - limit);
-    setCurrent((prev) => prev - 1);
+    setCurrent((prev) => (prev - 1 > 1 ? prev - 1 : 1));
+  };
+
+  const onPageChange = (pageNumber: number) => {
+    setOffset(limit * pageNumber);
+    setCurrent(pageNumber);
   };
 
   return (
     <div className={styles.pagination}>
-      <div className={styles.prev} onClick={prevHandle}>
+      <div
+        className={classNames(styles.prev, {
+          [styles.prev_disabled]: currentPage === 1,
+        })}
+        onClick={prevHandle}
+      >
         <img src={prev} alt="prev" />
       </div>
 
       <div className={styles.pages}>
-        <div className={styles.page}>1</div>
+        {paginationRange.map((pageNumber) => {
+          if (pageNumber === 0) {
+            return <li className={styles.dots}>...</li>;
+          }
 
-        {current < middle && (
-          <>
-            <div className={styles.page}>{current + 1}</div>
-            <div className={styles.page}>{current + 2}</div>{' '}
-            <div className={styles.dots}>...</div>
-          </>
-        )}
-
-        {current > middle && (
-          <>
-            <div className={styles.dots}>...</div>
-            <div className={styles.page}>{current - 2}</div>
-            <div className={styles.page}>{current - 1}</div>
-          </>
-        )}
-
-        <div className={styles.page}>{totalPages}</div>
+          return (
+            <li
+              className={classNames(styles.page, {
+                [styles.page_selected]: pageNumber === currentPage,
+              })}
+              onClick={() => onPageChange(pageNumber)}
+            >
+              {pageNumber}
+            </li>
+          );
+        })}
       </div>
 
-      <div className={styles.next} onClick={nextHandle}>
+      <div
+        className={classNames(styles.next, {
+          [styles.next_disabled]: currentPage === totalPages,
+        })}
+        onClick={nextHandle}
+      >
         <img src={next} alt="next" />
       </div>
     </div>

@@ -52,6 +52,7 @@ const Products = () => {
       setProductsIsLoading(false);
     };
 
+    setProductsIsLoading(true);
     fetch();
   }, [category, searchProperty]);
 

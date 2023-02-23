@@ -65,7 +65,12 @@ const Products = () => {
         url: '/categories',
       });
 
-      setCategories(result.data);
+      const categoryAll: Category = {
+        id: 0,
+        name: 'All',
+        image: '',
+      };
+      setCategories([categoryAll, ...result.data]);
     };
 
     fetch();

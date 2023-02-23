@@ -8,6 +8,7 @@ import axios from 'axios';
 import { Link, useParams } from 'react-router-dom';
 
 import styles from './Product.module.scss';
+import Slider from './Slider';
 
 const Product = () => {
   const { id } = useParams();
@@ -50,13 +51,7 @@ const Product = () => {
     <section className={styles.section}>
       <div className={`${styles.section__wrapper} wrapper`}>
         <div className={styles.product}>
-          <div className={styles.product__slider}>
-            <img
-              src={product?.images[0]}
-              alt={product?.title}
-              className={styles.product__image}
-            ></img>
-          </div>
+          {product && <Slider images={product.images} />}
 
           <div className={styles.product__content}>
             <div className={styles.product__title}>{product?.title}</div>

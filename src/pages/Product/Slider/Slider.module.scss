@@ -1,0 +1,45 @@
+@use '@styles/colors.scss';
+
+.slider {
+  width: 600px;
+  height: 600px;
+  position: relative;
+}
+
+.images {
+  width: 600px;
+  height: 600px;
+}
+
+.image {
+  width: 600px;
+  height: 600px;
+  object-fit: cover;
+}
+
+.prev,
+.next {
+  width: 64px;
+  height: 64px;
+  background-color: colors.$green;
+  position: absolute;
+  top: calc(50% - 32px);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  user-select: none;
+
+  & img {
+    filter: brightness(20);
+  }
+}
+
+.prev {
+  left: 25px;
+}
+
+.next {
+  right: 25px;
+}

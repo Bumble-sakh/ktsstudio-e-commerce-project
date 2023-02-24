@@ -2,21 +2,25 @@ import React, { useState } from 'react';
 
 import filter from '@assets/images/filter.svg';
 import classNames from 'classnames';
+import { useSearchParams } from 'react-router-dom';
 
 import styles from './Filter.module.scss';
 import { Category } from '../Products';
 
 type FilterProps = {
   categories: Category[];
-  selectedCategory: Category | null;
-  onClick: React.Dispatch<React.SetStateAction<Category | null>>;
+  categoryId: number | null;
+  setCategoryId: React.Dispatch<React.SetStateAction<number | null>>;
+  setPaginationPage: React.Dispatch<React.SetStateAction<number>>;
 };
 
 const Filter: React.FC<FilterProps> = ({
   categories,
-  selectedCategory,
-  onClick,
+  categoryId,
+  setCategoryId,
+  setPaginationPage,
 }) => {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [optionsIsVisible, setOptionsIsVisible] = useState(false);
 
   const selectOnClickHandler = () => {
@@ -24,12 +28,25 @@ const Filter: React.FC<FilterProps> = ({
   };
 
   const optionOnClickHandler = (category: Category) => {
-    onClick(category);
+    setCategoryId(category.id);
+
+    if (category.id) {
+      searchParams.set('categoryId', String(category.id));
+      setSearchParams(searchParams);
+    } else {
+      searchParams.delete('categoryId');
+      setSearchParams(searchParams);
+    }
+
+    setPaginationPage(1);
+    searchParams.delete('page');
+    setSearchParams(searchParams);
+
     selectOnClickHandler();
   };
 
   const options = categories.map((category) => {
-    const isSelected = selectedCategory?.id === category.id;
+    const isSelected = categoryId === category.id;
 
     const classes = classNames({
       [styles.list__item]: true,

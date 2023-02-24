@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import Card from '@components/Card';
 import Loader, { LoaderSize } from '@components/Loader';
 import PAGINATION from '@config/pagination';
 import ROUTES from '@config/routes';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 
 import Filter from './Filter';
 import Pagination from './Pagination';
@@ -28,13 +28,32 @@ export type Product = {
 };
 
 const Products = () => {
+  const [searchParams] = useSearchParams();
+
+  const [productsIsLoading, setProductsIsLoading] = useState(true);
+
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
-  const [category, setCategory] = useState<Category | null>(null);
-  const [searchProperty, setSearchProperty] = useState<string | null>(null);
-  const [offset, setOffset] = useState(0);
-  const limit = PAGINATION.limit;
-  const [productsIsLoading, setProductsIsLoading] = useState(true);
+
+  const [categoryId, setCategoryId] = useState<number | null>(
+    searchParams.get('categoryId')
+      ? Number(searchParams.get('categoryId'))
+      : null
+  );
+  const [searchProperty, setSearchProperty] = useState<string | null>(
+    searchParams.get('title')
+  );
+
+  const limit = useMemo(() => PAGINATION.limit, []);
+  const total = useMemo(() => products.length, [products.length]);
+  const totalPages = useMemo(() => Math.ceil(total / limit), [total, limit]);
+  const [paginationPage, setPaginationPage] = useState<number>(
+    searchParams.get('page') ? Number(searchParams.get('page')) : 1
+  );
+  const offset = useMemo(
+    () => (paginationPage - 1) * limit,
+    [paginationPage, limit]
+  );
 
   useEffect(() => {
     const fetch = async () => {
@@ -43,19 +62,18 @@ const Products = () => {
         baseURL: 'https://api.escuelajs.co/api/v1',
         url: '/products',
         params: {
-          categoryId: category ? category.id : null,
+          categoryId: categoryId ? Number(categoryId) : null,
           title: searchProperty ? searchProperty : null,
         },
       });
 
       setProducts(result.data);
-      setOffset(0);
       setProductsIsLoading(false);
     };
 
     setProductsIsLoading(true);
     fetch();
-  }, [category, searchProperty]);
+  }, [categoryId, searchProperty]);
 
   useEffect(() => {
     const fetch = async () => {
@@ -86,11 +104,15 @@ const Products = () => {
         </p>
 
         <div className={styles.bar}>
-          <Search onChange={setSearchProperty} />
+          <Search
+            onChange={setSearchProperty}
+            setPaginationPage={setPaginationPage}
+          />
           <Filter
             categories={categories}
-            selectedCategory={category}
-            onClick={setCategory}
+            categoryId={categoryId}
+            setCategoryId={setCategoryId}
+            setPaginationPage={setPaginationPage}
           />
         </div>
 
@@ -119,10 +141,9 @@ const Products = () => {
 
             {products.length > limit && (
               <Pagination
-                offset={offset}
-                limit={limit}
-                setOffset={setOffset}
-                total={products.length}
+                totalPages={totalPages}
+                paginationPage={paginationPage}
+                setPaginationPage={setPaginationPage}
               />
             )}
           </>

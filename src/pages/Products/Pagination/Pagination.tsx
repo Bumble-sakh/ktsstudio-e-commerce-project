@@ -1,53 +1,73 @@
-import { useState } from 'react';
-
 import next from '@assets/images/next.svg';
 import prev from '@assets/images/prev.svg';
 import classNames from 'classnames';
+import { useSearchParams } from 'react-router-dom';
 
 import styles from './Pagination.module.scss';
 import { usePagination } from './usePagination';
 
 type PaginationProps = {
-  offset: number;
-  limit: number;
-  total: number;
-  setOffset: React.Dispatch<React.SetStateAction<number>>;
+  totalPages: number;
+  paginationPage: number;
+  setPaginationPage: React.Dispatch<React.SetStateAction<number>>;
 };
 
 const Pagination: React.FC<PaginationProps> = ({
-  offset,
-  limit,
-  total,
-  setOffset,
+  totalPages,
+  paginationPage,
+  setPaginationPage,
 }) => {
-  const [currentPage, setCurrent] = useState(1);
-  const totalPages = Math.ceil(total / limit);
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const paginationRange = usePagination({
-    currentPage,
+    currentPage: paginationPage,
     totalPages,
   });
 
   const nextHandle = () => {
-    setOffset(offset + limit);
-    setCurrent((prev) => (prev + 1 < totalPages ? prev + 1 : totalPages));
+    const page =
+      paginationPage + 1 < totalPages ? paginationPage + 1 : totalPages;
+
+    setPaginationPage(page);
+    if (page > 1) {
+      searchParams.set('page', String(page));
+      setSearchParams(searchParams);
+    } else {
+      searchParams.delete('page');
+      setSearchParams(searchParams);
+    }
   };
 
   const prevHandle = () => {
-    setOffset(offset - limit);
-    setCurrent((prev) => (prev - 1 > 1 ? prev - 1 : 1));
+    const page = paginationPage - 1 > 1 ? paginationPage - 1 : 1;
+
+    setPaginationPage(page);
+    if (page > 1) {
+      searchParams.set('page', String(page));
+      setSearchParams(searchParams);
+    } else {
+      searchParams.delete('page');
+      setSearchParams(searchParams);
+    }
   };
 
-  const onPageChange = (pageNumber: number) => {
-    setOffset(limit * pageNumber);
-    setCurrent(pageNumber);
+  const onPageChange = (page: number) => {
+    setPaginationPage(page);
+
+    if (page > 1) {
+      searchParams.set('page', String(page));
+      setSearchParams(searchParams);
+    } else {
+      searchParams.delete('page');
+      setSearchParams(searchParams);
+    }
   };
 
   return (
     <div className={styles.pagination}>
       <div
         className={classNames(styles.prev, {
-          [styles.prev_disabled]: currentPage === 1,
+          [styles.prev_disabled]: paginationPage === 1,
         })}
         onClick={prevHandle}
       >
@@ -55,15 +75,20 @@ const Pagination: React.FC<PaginationProps> = ({
       </div>
 
       <div className={styles.pages}>
-        {paginationRange.map((pageNumber) => {
+        {paginationRange.map((pageNumber, idx) => {
           if (pageNumber === 0) {
-            return <li className={styles.dots}>...</li>;
+            return (
+              <li key={idx} className={styles.dots}>
+                ...
+              </li>
+            );
           }
 
           return (
             <li
+              key={idx}
               className={classNames(styles.page, {
-                [styles.page_selected]: pageNumber === currentPage,
+                [styles.page_selected]: pageNumber === paginationPage,
               })}
               onClick={() => onPageChange(pageNumber)}
             >
@@ -75,7 +100,7 @@ const Pagination: React.FC<PaginationProps> = ({
 
       <div
         className={classNames(styles.next, {
-          [styles.next_disabled]: currentPage === totalPages,
+          [styles.next_disabled]: paginationPage === totalPages,
         })}
         onClick={nextHandle}
       >

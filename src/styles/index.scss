@@ -7,7 +7,14 @@
 html,
 body {
   font-family: 'Eudoxus Sans', sans-serif;
+  font-style: normal;
+  font-size: 16px;
   margin: 0;
+  overflow-x: hidden;
+
+  @media (max-width: 880px) {
+    font-size: 1.125rem;
+  }
 }
 
 ul {
@@ -26,4 +33,8 @@ a {
   margin: 0 auto;
   display: flex;
   padding: 0 100px;
+
+  @media (max-width: 1439px) {
+    padding: 0 24px;
+  }
 }

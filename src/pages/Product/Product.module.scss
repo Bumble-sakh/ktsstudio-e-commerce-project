@@ -11,40 +11,56 @@
 .product {
   display: flex;
   flex-direction: row;
+  justify-content: center;
   gap: 50px;
   margin: 100px 0 50px;
 
   &__content {
     display: flex;
     flex-direction: column;
+    width: calc(50% - 50px);
+
+    @media (max-width: 880px) {
+      gap: 30px;
+      width: 100%;
+    }
   }
 
   &__title {
     margin: 30px 0 20px;
-    font-style: normal;
+
     font-weight: 700;
-    font-size: 44px;
+    font-size: 2.75rem;
     line-height: 130%;
     color: colors.$title;
+
+    @media (max-width: 880px) {
+      margin: 0 0 20px;
+    }
   }
 
   &__subtitle {
-    font-family: 'Eudoxus Sans';
-    font-style: normal;
     font-weight: 500;
-    font-size: 18px;
+    font-size: 1.125rem;
     line-height: 180%;
     color: colors.$subtitle;
     margin-bottom: 128px;
+
+    @media (max-width: 880px) {
+      margin-bottom: 30px;
+    }
   }
 
   &__price {
-    font-style: normal;
     font-weight: 700;
-    font-size: 44px;
+    font-size: 2.75rem;
     line-height: 130%;
     color: colors.$title;
     margin-bottom: 50px;
+
+    @media (max-width: 880px) {
+      margin-bottom: 30px;
+    }
   }
 
   &__buttons {
@@ -61,18 +77,32 @@
       color: colors.$title;
       border: 2px solid colors.$grey;
     }
+
+    @media (max-width: 880px) {
+      flex-direction: column;
+      gap: 12px;
+    }
+  }
+
+  @media (max-width: 880px) {
+    flex-direction: column;
+    margin: 50px 0 50px;
   }
 }
 
 .title {
   align-self: flex-start;
-  font-style: normal;
   font-weight: 700;
-  font-size: 32px;
+  font-size: 2rem;
   line-height: 130%;
   letter-spacing: 0.01em;
   color: colors.$title;
   margin-bottom: 30px;
+
+  @media (max-width: 880px) {
+    font-size: 1.125rem;
+    margin-bottom: 23px;
+  }
 }
 
 .cards {
@@ -82,4 +112,9 @@
   justify-content: space-between;
   gap: 30px;
   margin-bottom: 55px;
+
+  @media (max-width: 880px) {
+    gap: 15px;
+    margin-bottom: 36px;
+  }
 }

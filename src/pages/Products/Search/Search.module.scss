@@ -8,6 +8,30 @@
   gap: 18px;
   padding: 0 25px;
   box-shadow: 0px 4px 20px rgba(175, 173, 181, 0.2);
+
+  & img {
+    width: 32px;
+    height: 32px;
+
+    @media (max-width: 880px) {
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  & button {
+    @media (max-width: 880px) {
+      min-width: 100px;
+      height: 38px;
+      font-size: 0.875rem;
+      padding: 0 15px;
+    }
+  }
+
+  @media (max-width: 880px) {
+    gap: 12px;
+    padding: 0 8px 0 14px;
+  }
 }
 
 .input {
@@ -16,20 +40,23 @@
   flex-grow: 1;
   box-sizing: border-box;
   border: none;
-  font-style: normal;
+
   font-weight: 500;
-  font-size: 18px;
+  font-size: 1.125rem;
   line-height: 32px;
   color: colors.$title;
   background-color: colors.$white;
 
   &::placeholder {
-    font-style: normal;
     font-weight: 500;
-    font-size: 18px;
+    font-size: 1.125rem;
     line-height: 180%;
 
     color: colors.$subtitle;
+
+    @media (max-width: 880px) {
+      font-size: 0.875rem;
+    }
   }
 
   &:focus {
@@ -40,10 +67,16 @@
     border: none;
     outline: none;
     font-family: 'Roboto';
-    font-style: normal;
+
     font-weight: 400;
-    font-size: 18px;
+    font-size: 1.125rem;
     line-height: 180%;
     opacity: 0.7;
+  }
+
+  @media (max-width: 880px) {
+    width: 157px;
+    height: 54px;
+    font-size: 0.875rem;
   }
 }

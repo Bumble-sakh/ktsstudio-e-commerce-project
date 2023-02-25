@@ -1,33 +1,31 @@
 import React from 'react';
 
+import ROUTES from '@config/routes';
+import { Product } from '@pages/Products';
+import { Link } from 'react-router-dom';
+
 import styles from './Card.module.scss';
 
 export type CardProps = {
-  image: string;
-  title: React.ReactNode;
-  subtitle: React.ReactNode;
-  category?: React.ReactNode;
-  content?: React.ReactNode;
-  onClick?: React.MouseEventHandler;
+  product: Product;
 };
 
-const Card: React.FC<CardProps> = ({
-  image,
-  title,
-  subtitle,
-  category,
-  content,
-  onClick,
-}) => {
+const Card: React.FC<CardProps> = ({ product }) => {
   return (
-    <li className={styles.card} onClick={onClick}>
-      <img src={image} alt="Product" className={styles.card__image} />
-      {category ? (
-        <div className={styles.card__category}>{category}</div>
-      ) : null}
-      <div className={styles.card__title}>{title}</div>
-      <div className={styles.card__subtitle}>{subtitle}</div>
-      <div className={styles.card__content}>{content}</div>
+    <li className={styles.card}>
+      <Link to={`${ROUTES.product}/${product.id}`}>
+        <img
+          src={product.images[0]}
+          alt="Product"
+          className={styles.card__image}
+        />
+        {product.category ? (
+          <div className={styles.card__category}>{product.category.name}</div>
+        ) : null}
+        <div className={styles.card__title}>{product.title}</div>
+        <div className={styles.card__subtitle}>{product.description}</div>
+        <div className={styles.card__content}>{`$${product.price}`}</div>
+      </Link>
     </li>
   );
 };

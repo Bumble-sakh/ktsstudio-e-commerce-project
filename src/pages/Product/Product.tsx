@@ -3,10 +3,9 @@ import { useEffect, useState } from 'react';
 import Button from '@components/Button';
 import Card from '@components/Card';
 import Loader, { LoaderSize } from '@components/Loader';
-import ROUTES from '@config/routes';
 import { Product as ProductType } from '@pages/Products';
 import axios from 'axios';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 import styles from './Product.module.scss';
 import Slider from './Slider';
@@ -84,15 +83,7 @@ const Product = () => {
         ) : (
           <ul className={styles.cards}>
             {related.map((product) => (
-              <Link to={`${ROUTES.product}/${product.id}`} key={product.id}>
-                <Card
-                  image={product.images[0]}
-                  title={product.title}
-                  subtitle={product.description}
-                  content={`$${product.price}`}
-                  category={product.category.name}
-                />
-              </Link>
+              <Card key={product.id} product={product} />
             ))}
           </ul>
         )}

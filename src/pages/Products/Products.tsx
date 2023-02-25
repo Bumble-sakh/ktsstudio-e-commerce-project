@@ -3,9 +3,8 @@ import { useEffect, useMemo, useState } from 'react';
 import Card from '@components/Card';
 import Loader, { LoaderSize } from '@components/Loader';
 import PAGINATION from '@config/pagination';
-import ROUTES from '@config/routes';
 import axios from 'axios';
-import { Link, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 
 import Filter from './Filter';
 import Pagination from './Pagination';
@@ -127,15 +126,7 @@ const Products = () => {
 
             <ul className={styles.cards}>
               {products.slice(offset, offset + limit).map((product) => (
-                <Link to={`${ROUTES.product}/${product.id}`} key={product.id}>
-                  <Card
-                    image={product.images[0]}
-                    title={product.title}
-                    subtitle={product.description}
-                    content={`$${product.price}`}
-                    category={product.category.name}
-                  />
-                </Link>
+                <Card key={product.id} product={product} />
               ))}
             </ul>
 

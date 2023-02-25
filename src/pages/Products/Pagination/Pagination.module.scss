@@ -5,6 +5,10 @@
   flex-direction: row;
   gap: 15px;
   margin-bottom: 50px;
+
+  @media (max-width: 880px) {
+    gap: 12px;
+  }
 }
 
 .pages {
@@ -23,6 +27,11 @@
   justify-content: center;
   cursor: pointer;
   user-select: none;
+
+  @media (max-width: 880px) {
+    width: 32px;
+    height: 32px;
+  }
 }
 
 .prev,
@@ -31,12 +40,16 @@
     pointer-events: none;
     opacity: 0.2;
   }
+
+  @media (max-width: 880px) {
+    width: 28px;
+    height: 32px;
+  }
 }
 
 .page {
-  font-style: normal;
   font-weight: 500;
-  font-size: 18px;
+  font-size: 1.125rem;
   line-height: 180%;
   color: colors.$title;
   border: 1.5px solid colors.$lightgrey;

@@ -1,5 +1,6 @@
 import next from '@assets/images/next.svg';
 import prev from '@assets/images/prev.svg';
+import PAGINATION from '@config/pagination';
 import classNames from 'classnames';
 import { useSearchParams } from 'react-router-dom';
 
@@ -76,7 +77,7 @@ const Pagination: React.FC<PaginationProps> = ({
 
       <div className={styles.pages}>
         {paginationRange.map((pageNumber, idx) => {
-          if (pageNumber === 0) {
+          if (pageNumber === PAGINATION.dots) {
             return (
               <li key={idx} className={styles.dots}>
                 ...

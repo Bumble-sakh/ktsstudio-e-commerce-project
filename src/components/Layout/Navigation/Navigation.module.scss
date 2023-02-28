@@ -1,4 +1,5 @@
-@use '@styles/colors.scss';
+@use '@styles/colors';
+@import '@styles/mixins';
 
 .navigation {
   height: 100%;
@@ -24,7 +25,7 @@
   & .list {
     gap: 60px;
 
-    @media (max-width: 880px) {
+    @include tab-media {
       gap: 15px;
     }
   }

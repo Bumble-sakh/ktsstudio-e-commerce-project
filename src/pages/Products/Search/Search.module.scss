@@ -1,4 +1,5 @@
-@use '@styles/colors.scss';
+@use '@styles/colors';
+@import '@styles/mixins';
 
 .form {
   width: 100%;
@@ -13,14 +14,14 @@
     width: 32px;
     height: 32px;
 
-    @media (max-width: 880px) {
+    @include tab-media {
       width: 24px;
       height: 24px;
     }
   }
 
   & button {
-    @media (max-width: 880px) {
+    @include tab-media {
       min-width: 100px;
       height: 38px;
       font-size: 0.875rem;
@@ -28,7 +29,7 @@
     }
   }
 
-  @media (max-width: 880px) {
+  @include tab-media {
     gap: 12px;
     padding: 0 8px 0 14px;
   }
@@ -54,7 +55,7 @@
 
     color: colors.$subtitle;
 
-    @media (max-width: 880px) {
+    @include tab-media {
       font-size: 0.875rem;
     }
   }
@@ -74,7 +75,7 @@
     opacity: 0.7;
   }
 
-  @media (max-width: 880px) {
+  @include tab-media {
     width: 157px;
     height: 54px;
     font-size: 0.875rem;

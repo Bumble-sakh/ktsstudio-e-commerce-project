@@ -30,4 +30,4 @@ const Card: React.FC<CardProps> = ({ product }) => {
   );
 };
 
-export default Card;
+export default React.memo(Card);

@@ -1,3 +1,5 @@
+import PAGINATION from '@config/pagination';
+
 const range = (start: number, end: number) => {
   let length = end - start + 1;
   return Array.from({ length }, (_, idx) => idx + start);
@@ -12,38 +14,44 @@ export const usePagination = ({
   totalPages,
   currentPage,
 }: HookProps): number[] => {
-  const totalPageNumbers = 5;
-
-  if (totalPageNumbers >= totalPages) {
-    return range(1, totalPages);
+  if (PAGINATION.totalPageNumbers >= totalPages) {
+    return range(PAGINATION.firstPage, totalPages);
   }
 
-  const leftSiblingIndex = Math.max(currentPage, 1);
+  const leftSiblingIndex = Math.max(currentPage, PAGINATION.firstPage);
   const rightSiblingIndex = Math.min(currentPage, totalPages);
 
-  const shouldShowLeftDots = leftSiblingIndex > 2;
-  const shouldShowRightDots = rightSiblingIndex < totalPages - 2;
+  const shouldShowLeftDots = leftSiblingIndex > PAGINATION.minPageNumbers;
+  const shouldShowRightDots =
+    rightSiblingIndex < totalPages - PAGINATION.minPageNumbers;
 
-  const firstPageIndex = 1;
+  const firstPageIndex = PAGINATION.firstPage;
   const lastPageIndex = totalPages;
 
   if (!shouldShowLeftDots && shouldShowRightDots) {
-    let leftItemCount = 3;
-    let leftRange = range(1, leftItemCount);
+    const leftRange = range(PAGINATION.firstPage, PAGINATION.leftItemCount);
 
-    return [...leftRange, 0, totalPages];
+    return [...leftRange, PAGINATION.dots, totalPages];
   }
 
   if (shouldShowLeftDots && !shouldShowRightDots) {
-    let rightItemCount = 3;
-    let rightRange = range(totalPages - rightItemCount + 1, totalPages);
-    return [firstPageIndex, 0, ...rightRange];
+    const rightRange = range(
+      totalPages - PAGINATION.rightItemCount + 1,
+      totalPages
+    );
+    return [firstPageIndex, PAGINATION.dots, ...rightRange];
   }
 
   if (shouldShowLeftDots && shouldShowRightDots) {
-    let middleRange = range(leftSiblingIndex, rightSiblingIndex);
-    return [firstPageIndex, 0, ...middleRange, 0, lastPageIndex];
+    const middleRange = range(leftSiblingIndex, rightSiblingIndex);
+    return [
+      firstPageIndex,
+      PAGINATION.dots,
+      ...middleRange,
+      PAGINATION.dots,
+      lastPageIndex,
+    ];
   }
 
-  return [0];
+  return [PAGINATION.dots];
 };

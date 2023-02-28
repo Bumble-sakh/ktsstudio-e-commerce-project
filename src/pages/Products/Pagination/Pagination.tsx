@@ -1,5 +1,8 @@
+import { useCallback } from 'react';
+
 import next from '@assets/images/next.svg';
 import prev from '@assets/images/prev.svg';
+import PAGINATION from '@config/pagination';
 import classNames from 'classnames';
 import { useSearchParams } from 'react-router-dom';
 
@@ -24,7 +27,7 @@ const Pagination: React.FC<PaginationProps> = ({
     totalPages,
   });
 
-  const nextHandle = () => {
+  const nextHandle = useCallback(() => {
     const page =
       paginationPage + 1 < totalPages ? paginationPage + 1 : totalPages;
 
@@ -36,9 +39,15 @@ const Pagination: React.FC<PaginationProps> = ({
       searchParams.delete('page');
       setSearchParams(searchParams);
     }
-  };
+  }, [
+    paginationPage,
+    searchParams,
+    setPaginationPage,
+    setSearchParams,
+    totalPages,
+  ]);
 
-  const prevHandle = () => {
+  const prevHandle = useCallback(() => {
     const page = paginationPage - 1 > 1 ? paginationPage - 1 : 1;
 
     setPaginationPage(page);
@@ -49,19 +58,22 @@ const Pagination: React.FC<PaginationProps> = ({
       searchParams.delete('page');
       setSearchParams(searchParams);
     }
-  };
+  }, [paginationPage, searchParams, setPaginationPage, setSearchParams]);
 
-  const onPageChange = (page: number) => {
-    setPaginationPage(page);
+  const onPageChange = useCallback(
+    (page: number) => {
+      setPaginationPage(page);
 
-    if (page > 1) {
-      searchParams.set('page', String(page));
-      setSearchParams(searchParams);
-    } else {
-      searchParams.delete('page');
-      setSearchParams(searchParams);
-    }
-  };
+      if (page > 1) {
+        searchParams.set('page', String(page));
+        setSearchParams(searchParams);
+      } else {
+        searchParams.delete('page');
+        setSearchParams(searchParams);
+      }
+    },
+    [searchParams, setPaginationPage, setSearchParams]
+  );
 
   return (
     <div className={styles.pagination}>
@@ -76,7 +88,7 @@ const Pagination: React.FC<PaginationProps> = ({
 
       <div className={styles.pages}>
         {paginationRange.map((pageNumber, idx) => {
-          if (pageNumber === 0) {
+          if (pageNumber === PAGINATION.dots) {
             return (
               <li key={idx} className={styles.dots}>
                 ...

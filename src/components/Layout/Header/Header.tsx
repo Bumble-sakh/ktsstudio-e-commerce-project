@@ -11,11 +11,7 @@ const Header = () => {
   const [isBurger, setIsBurger] = useState(false);
 
   const resizeHandler = () => {
-    if (document.body.clientWidth <= 880) {
-      setIsBurger(true);
-    } else {
-      setIsBurger(false);
-    }
+    setIsBurger(document.body.clientWidth <= 880);
   };
 
   useEffect(() => {

@@ -1,10 +1,11 @@
 @use '@styles/colors';
+@import '@styles/mixins';
 
 .slider {
   width: calc(50% - 50px);
   position: relative;
 
-  @media (max-width: 880px) {
+  @include tab-media {
     width: 100%;
   }
 }
@@ -39,13 +40,13 @@
     height: 30px;
     filter: brightness(20);
 
-    @media (max-width: 880px) {
+    @include tab-media {
       width: 18.5px;
       height: 18.5px;
     }
   }
 
-  @media (max-width: 880px) {
+  @include tab-media {
     width: 40px;
     height: 40px;
     top: calc(50% - 20px);
@@ -54,14 +55,14 @@
 
 .prev {
   left: 25px;
-  @media (max-width: 880px) {
+  @include tab-media {
     left: 16px;
   }
 }
 
 .next {
   right: 25px;
-  @media (max-width: 880px) {
+  @include tab-media {
     right: 16px;
   }
 }

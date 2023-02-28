@@ -34,4 +34,4 @@ const Loader: React.FC<LoaderProps> = ({
   return <div className={classes}></div>;
 };
 
-export default Loader;
+export default React.memo(Loader);

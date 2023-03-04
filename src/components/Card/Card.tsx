@@ -1,13 +1,13 @@
 import React from 'react';
 
 import ROUTES from '@config/routes';
-import { Product } from '@pages/Products';
+import { ProductModel } from '@store/models/product';
 import { Link } from 'react-router-dom';
 
 import styles from './Card.module.scss';
 
 export type CardProps = {
-  product: Product;
+  product: ProductModel;
 };
 
 const Card: React.FC<CardProps> = ({ product }) => {

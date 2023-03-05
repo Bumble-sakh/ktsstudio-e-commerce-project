@@ -1,20 +1,27 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
-import search from '@assets/images/search.svg';
+import searchIcon from '@assets/images/search.svg';
 import Button from '@components/Button';
+import PaginationStore from '@store/PaginationStore';
+import rootStore from '@store/RootStore/instance';
+import { useLocalStore } from '@utils/useLocalStore';
+import { runInAction } from 'mobx';
 import { useSearchParams } from 'react-router-dom';
 
 import styles from './Search.module.scss';
 
-export type SearchProps = {
-  onChange: (value: string) => void;
-  setPaginationPage: React.Dispatch<React.SetStateAction<number>>;
-};
-
-const Search: React.FC<SearchProps> = ({ onChange, setPaginationPage }) => {
+const Search = () => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const paginationStore = useLocalStore(() => new PaginationStore());
 
-  const [value, setValue] = useState(searchParams.get('title') ?? '');
+  const [value, setValue] = useState('');
+
+  useEffect(() => {
+    runInAction(() => {
+      const search = rootStore.query.getParam('search') ?? '';
+      setValue(search);
+    });
+  }, []);
 
   const onChangeHandler = (event: React.FormEvent<HTMLInputElement>) => {
     setValue(event.currentTarget.value);
@@ -24,23 +31,24 @@ const Search: React.FC<SearchProps> = ({ onChange, setPaginationPage }) => {
     e.preventDefault();
 
     if (value) {
-      searchParams.set('title', value);
+      searchParams.set('search', value);
       setSearchParams(searchParams);
     } else {
-      searchParams.delete('title');
+      searchParams.delete('search');
       setSearchParams(searchParams);
     }
 
-    setPaginationPage(1);
     searchParams.delete('page');
     setSearchParams(searchParams);
 
-    onChange(value);
+    rootStore.query.setSearch(searchParams.toString());
+
+    paginationStore.setPaginationPage(1);
   };
 
   return (
     <form className={styles.form} onSubmit={onSubmitHandler}>
-      <img src={search} alt="search" />
+      <img src={searchIcon} alt="search" />
       <input
         type="search"
         className={styles.input}

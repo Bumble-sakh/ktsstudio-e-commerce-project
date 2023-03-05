@@ -24,7 +24,6 @@ export default class PaginationStore implements ILocalStore {
       _limit: observable,
       _total: observable,
       _offset: observable,
-
       paginationPage: computed,
       limit: computed,
       total: computed,

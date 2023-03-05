@@ -22,7 +22,6 @@ const Products = () => {
   const productsStore = useLocalStore(() => new ProductsStore());
   const paginationStore = useLocalStore(() => new PaginationStore());
 
-  // const limit = useMemo(() => PAGINATION.limit, []);
   const total = useMemo(
     () => productsStore.products.length,
     [productsStore.products.length]
@@ -32,15 +31,16 @@ const Products = () => {
     [total, paginationStore.limit]
   );
 
-  // const offset = (paginationStore.paginationPage - 1) * limit;
-
   useEffect(() => {
     runInAction(() => {
       const search = rootStore.query.getParam('search') ?? null;
       const categoryId = rootStore.query.getParam('categoryId') ?? null;
       productsStore.getProducts({ categoryId, search });
+
+      const page = rootStore.query.getParam('page') ?? 1;
+      paginationStore.setPaginationPage(+page);
     });
-  }, [productsStore]);
+  }, [productsStore, paginationStore]);
 
   return (
     <section className={styles.section}>

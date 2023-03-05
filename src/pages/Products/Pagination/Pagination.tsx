@@ -1,9 +1,10 @@
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 
 import next from '@assets/images/next.svg';
 import prev from '@assets/images/prev.svg';
 import PAGINATION from '@config/pagination';
 import PaginationStore from '@store/PaginationStore';
+import rootStore from '@store/RootStore/instance';
 import { useLocalStore } from '@utils/useLocalStore';
 import classNames from 'classnames';
 import { runInAction } from 'mobx';
@@ -26,6 +27,13 @@ const Pagination: React.FC<PaginationProps> = ({ totalPages }) => {
     currentPage: paginationStore.paginationPage,
     totalPages,
   });
+
+  useEffect(() => {
+    runInAction(() => {
+      const page = rootStore.query.getParam('page') ?? 1;
+      paginationStore.setPaginationPage(+page);
+    });
+  }, [paginationStore]);
 
   const nextHandle = useCallback(
     () =>

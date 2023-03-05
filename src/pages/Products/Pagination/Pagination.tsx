@@ -3,7 +3,11 @@ import { useCallback } from 'react';
 import next from '@assets/images/next.svg';
 import prev from '@assets/images/prev.svg';
 import PAGINATION from '@config/pagination';
+import PaginationStore from '@store/PaginationStore';
+import { useLocalStore } from '@utils/useLocalStore';
 import classNames from 'classnames';
+import { runInAction } from 'mobx';
+import { observer } from 'mobx-react-lite';
 import { useSearchParams } from 'react-router-dom';
 
 import styles from './Pagination.module.scss';
@@ -11,75 +15,79 @@ import { usePagination } from './usePagination';
 
 type PaginationProps = {
   totalPages: number;
-  paginationPage: number;
-  setPaginationPage: React.Dispatch<React.SetStateAction<number>>;
 };
 
-const Pagination: React.FC<PaginationProps> = ({
-  totalPages,
-  paginationPage,
-  setPaginationPage,
-}) => {
+const Pagination: React.FC<PaginationProps> = ({ totalPages }) => {
   const [searchParams, setSearchParams] = useSearchParams();
 
+  const paginationStore = useLocalStore(() => new PaginationStore());
+
   const paginationRange = usePagination({
-    currentPage: paginationPage,
+    currentPage: paginationStore.paginationPage,
     totalPages,
   });
 
-  const nextHandle = useCallback(() => {
-    const page =
-      paginationPage + 1 < totalPages ? paginationPage + 1 : totalPages;
+  const nextHandle = useCallback(
+    () =>
+      runInAction(() => {
+        const page =
+          paginationStore.paginationPage + 1 < totalPages
+            ? paginationStore.paginationPage + 1
+            : totalPages;
 
-    setPaginationPage(page);
-    if (page > 1) {
-      searchParams.set('page', String(page));
-      setSearchParams(searchParams);
-    } else {
-      searchParams.delete('page');
-      setSearchParams(searchParams);
-    }
-  }, [
-    paginationPage,
-    searchParams,
-    setPaginationPage,
-    setSearchParams,
-    totalPages,
-  ]);
+        paginationStore.setPaginationPage(page);
+        if (page > 1) {
+          searchParams.set('page', String(page));
+          setSearchParams(searchParams);
+        } else {
+          searchParams.delete('page');
+          setSearchParams(searchParams);
+        }
+      }),
+    [searchParams, setSearchParams, totalPages, paginationStore]
+  );
 
-  const prevHandle = useCallback(() => {
-    const page = paginationPage - 1 > 1 ? paginationPage - 1 : 1;
+  const prevHandle = useCallback(
+    () =>
+      runInAction(() => {
+        const page =
+          paginationStore.paginationPage - 1 > 1
+            ? paginationStore.paginationPage - 1
+            : 1;
 
-    setPaginationPage(page);
-    if (page > 1) {
-      searchParams.set('page', String(page));
-      setSearchParams(searchParams);
-    } else {
-      searchParams.delete('page');
-      setSearchParams(searchParams);
-    }
-  }, [paginationPage, searchParams, setPaginationPage, setSearchParams]);
+        paginationStore.setPaginationPage(page);
+        if (page > 1) {
+          searchParams.set('page', String(page));
+          setSearchParams(searchParams);
+        } else {
+          searchParams.delete('page');
+          setSearchParams(searchParams);
+        }
+      }),
+    [searchParams, setSearchParams, paginationStore]
+  );
 
   const onPageChange = useCallback(
-    (page: number) => {
-      setPaginationPage(page);
+    (page: number) =>
+      runInAction(() => {
+        paginationStore.setPaginationPage(page);
 
-      if (page > 1) {
-        searchParams.set('page', String(page));
-        setSearchParams(searchParams);
-      } else {
-        searchParams.delete('page');
-        setSearchParams(searchParams);
-      }
-    },
-    [searchParams, setPaginationPage, setSearchParams]
+        if (page > 1) {
+          searchParams.set('page', String(page));
+          setSearchParams(searchParams);
+        } else {
+          searchParams.delete('page');
+          setSearchParams(searchParams);
+        }
+      }),
+    [searchParams, setSearchParams, paginationStore]
   );
 
   return (
     <div className={styles.pagination}>
       <div
         className={classNames(styles.prev, {
-          [styles.prev_disabled]: paginationPage === 1,
+          [styles.prev_disabled]: paginationStore.paginationPage === 1,
         })}
         onClick={prevHandle}
       >
@@ -100,7 +108,8 @@ const Pagination: React.FC<PaginationProps> = ({
             <li
               key={idx}
               className={classNames(styles.page, {
-                [styles.page_selected]: pageNumber === paginationPage,
+                [styles.page_selected]:
+                  pageNumber === paginationStore.paginationPage,
               })}
               onClick={() => onPageChange(pageNumber)}
             >
@@ -112,7 +121,7 @@ const Pagination: React.FC<PaginationProps> = ({
 
       <div
         className={classNames(styles.next, {
-          [styles.next_disabled]: paginationPage === totalPages,
+          [styles.next_disabled]: paginationStore.paginationPage === totalPages,
         })}
         onClick={nextHandle}
       >
@@ -122,4 +131,4 @@ const Pagination: React.FC<PaginationProps> = ({
   );
 };
 
-export default Pagination;
+export default observer(Pagination);

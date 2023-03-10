@@ -23,7 +23,7 @@ export default class RelatedStore implements ILocalStore {
       _meta: observable,
       related: computed,
       meta: computed,
-      getRelated: action,
+      getRelated: action.bound,
     });
   }
 

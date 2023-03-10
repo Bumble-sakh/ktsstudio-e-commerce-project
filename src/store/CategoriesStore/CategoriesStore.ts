@@ -23,7 +23,7 @@ export default class CategoriesStore implements ILocalStore {
       _meta: observable,
       categories: computed,
       meta: computed,
-      getCategories: action,
+      getCategories: action.bound,
     });
   }
 

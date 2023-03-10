@@ -35,7 +35,7 @@ export default class ProductsStore implements ILocalStore {
       _categoryId: observable,
       products: computed,
       meta: computed,
-      getProducts: action,
+      getProducts: action.bound,
     });
   }
 

@@ -21,8 +21,8 @@ export default class FilterStore implements ILocalStore {
       _optionsIsVisible: observable,
       categoryId: computed,
       optionsIsVisible: computed,
-      setCategoryId: action,
-      toggleOptionsIsVisible: action,
+      setCategoryId: action.bound,
+      toggleOptionsIsVisible: action.bound,
     });
   }
 

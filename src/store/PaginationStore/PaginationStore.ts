@@ -30,8 +30,8 @@ export default class PaginationStore implements ILocalStore {
       offset: computed,
       isVisible: computed,
 
-      setPaginationPage: action,
-      setTotal: action,
+      setPaginationPage: action.bound,
+      setTotal: action.bound,
     });
   }
 

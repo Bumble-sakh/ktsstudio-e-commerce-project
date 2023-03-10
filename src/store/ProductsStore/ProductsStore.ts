@@ -68,15 +68,13 @@ export default class ProductsStore implements ILocalStore {
 
     runInAction(() => {
       if (response.status === 200) {
-        try {
-          this._meta = Meta.success;
-          this._products = response.data.map(normalizeProduct);
-          return;
-        } catch {
-          this._meta = Meta.error;
-          this._products = [];
-        }
+        this._meta = Meta.success;
+        this._products = response.data.map(normalizeProduct);
+        return;
       }
+
+      this._meta = Meta.error;
+      this._products = [];
     });
   }
 

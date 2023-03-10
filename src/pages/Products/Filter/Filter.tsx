@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 
 import filter from '@assets/images/filter.svg';
 import CategoriesStore from '@store/CategoriesStore';
@@ -23,40 +23,49 @@ const Filter = () => {
     categoriesStore.getCategories();
   }, [categoriesStore]);
 
-  const optionOnClickHandler = (category: CategoryModel) => {
-    if (category.id) {
-      searchParams.set('categoryId', String(category.id));
+  const optionOnClickHandler = useCallback(
+    (category: CategoryModel) => {
+      if (category.id) {
+        searchParams.set('categoryId', String(category.id));
+        setSearchParams(searchParams);
+      } else {
+        searchParams.delete('categoryId');
+        setSearchParams(searchParams);
+      }
+
+      paginationStore.setPaginationPage(1);
+      searchParams.delete('page');
       setSearchParams(searchParams);
-    } else {
-      searchParams.delete('categoryId');
-      setSearchParams(searchParams);
-    }
 
-    paginationStore.setPaginationPage(1);
-    searchParams.delete('page');
-    setSearchParams(searchParams);
+      filterStore.toggleOptionsIsVisible();
+    },
+    [filterStore, paginationStore, searchParams, setSearchParams]
+  );
 
-    filterStore.toggleOptionsIsVisible();
-  };
+  const options = useMemo(() => {
+    return categoriesStore.categories.map((category) => {
+      const isSelected = filterStore.categoryId === category.id;
 
-  const options = categoriesStore.categories.map((category) => {
-    const isSelected = filterStore.categoryId === category.id;
+      const classes = classNames({
+        [styles.list__item]: true,
+        [styles.list__item_selected]: isSelected,
+      });
 
-    const classes = classNames({
-      [styles.list__item]: true,
-      [styles.list__item_selected]: isSelected,
+      return (
+        <li
+          key={category.id}
+          className={classes}
+          onClick={() => optionOnClickHandler(category)}
+        >
+          {category.name}
+        </li>
+      );
     });
-
-    return (
-      <li
-        key={category.id}
-        className={classes}
-        onClick={() => optionOnClickHandler(category)}
-      >
-        {category.name}
-      </li>
-    );
-  });
+  }, [
+    categoriesStore.categories,
+    filterStore.categoryId,
+    optionOnClickHandler,
+  ]);
 
   return (
     <div className={styles.filter}>

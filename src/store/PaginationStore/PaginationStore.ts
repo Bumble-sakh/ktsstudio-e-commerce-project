@@ -66,7 +66,7 @@ export default class PaginationStore implements ILocalStore {
   destroy() {}
 
   private readonly _qpReaction: IReactionDisposer = reaction(
-    () => rootStore.query.getParam('page'),
+    () => rootStore.queryParamsStore.getParam('page'),
     (page) => {
       if (page) {
         this.setPaginationPage(+page);

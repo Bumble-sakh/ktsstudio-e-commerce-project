@@ -33,11 +33,12 @@ const Products = () => {
 
   useEffect(() => {
     runInAction(() => {
-      const search = rootStore.query.getParam('search') ?? null;
-      const categoryId = rootStore.query.getParam('categoryId') ?? null;
+      const search = rootStore.queryParamsStore.getParam('search') ?? null;
+      const categoryId =
+        rootStore.queryParamsStore.getParam('categoryId') ?? null;
       productsStore.getProducts({ categoryId, search });
 
-      const page = rootStore.query.getParam('page') ?? 1;
+      const page = rootStore.queryParamsStore.getParam('page') ?? 1;
       paginationStore.setPaginationPage(+page);
     });
   }, [productsStore, paginationStore]);

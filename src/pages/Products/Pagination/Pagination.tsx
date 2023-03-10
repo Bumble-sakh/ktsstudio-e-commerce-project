@@ -30,7 +30,7 @@ const Pagination: React.FC<PaginationProps> = ({ totalPages }) => {
 
   useEffect(() => {
     runInAction(() => {
-      const page = rootStore.query.getParam('page') ?? 1;
+      const page = rootStore.queryParamsStore.getParam('page') ?? 1;
       paginationStore.setPaginationPage(+page);
     });
   }, [paginationStore]);

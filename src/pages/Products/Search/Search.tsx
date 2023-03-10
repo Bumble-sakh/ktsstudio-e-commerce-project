@@ -18,7 +18,7 @@ const Search = () => {
 
   useEffect(() => {
     runInAction(() => {
-      const search = rootStore.query.getParam('search') ?? '';
+      const search = rootStore.queryParamsStore.getParam('search') ?? '';
       setValue(search);
     });
   }, []);
@@ -41,7 +41,7 @@ const Search = () => {
     searchParams.delete('page');
     setSearchParams(searchParams);
 
-    rootStore.query.setSearch(searchParams.toString());
+    rootStore.queryParamsStore.setSearch(searchParams.toString());
 
     paginationStore.setPaginationPage(1);
   };

@@ -45,7 +45,7 @@ export default class FilterStore implements ILocalStore {
   destroy(): void {}
 
   private readonly _qpReaction: IReactionDisposer = reaction(
-    () => rootStore.query.getParam('categoryId'),
+    () => rootStore.queryParamsStore.getParam('categoryId'),
     (id) => {
       id && this.setCategoryId(+id);
     }

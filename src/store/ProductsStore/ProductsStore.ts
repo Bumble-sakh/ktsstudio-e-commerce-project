@@ -83,7 +83,7 @@ export default class ProductsStore implements ILocalStore {
   destroy(): void {}
 
   private readonly _qpSearchReaction: IReactionDisposer = reaction(
-    () => rootStore.query.getParam('search'),
+    () => rootStore.queryParamsStore.getParam('search'),
     (search) => {
       this._search = search ?? null;
       this.getProducts({ categoryId: this._categoryId, search });
@@ -91,7 +91,7 @@ export default class ProductsStore implements ILocalStore {
   );
 
   private readonly _qpCategoryIdReaction: IReactionDisposer = reaction(
-    () => rootStore.query.getParam('categoryId'),
+    () => rootStore.queryParamsStore.getParam('categoryId'),
     (categoryId) => {
       this._categoryId = categoryId ?? null;
       this.getProducts({ categoryId, search: this._search });

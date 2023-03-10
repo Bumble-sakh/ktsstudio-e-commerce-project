@@ -53,6 +53,10 @@ export default class ProductsStore implements ILocalStore {
       search: null,
     }
   ): Promise<void> {
+    if (this._meta === Meta.loading) {
+      return;
+    }
+
     this._meta = Meta.loading;
     this._products = [];
 

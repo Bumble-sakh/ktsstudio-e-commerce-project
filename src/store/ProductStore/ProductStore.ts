@@ -45,6 +45,10 @@ export default class ProductStore implements ILocalStore {
   }
 
   async getProduct(id: string): Promise<void> {
+    if (this._meta === Meta.loading) {
+      return;
+    }
+
     this._meta = Meta.loading;
     this._product = null;
 

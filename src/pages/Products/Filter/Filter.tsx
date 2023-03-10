@@ -23,10 +23,6 @@ const Filter = () => {
     categoriesStore.getCategories();
   }, [categoriesStore]);
 
-  const selectOnClickHandler = () => {
-    filterStore.toggleOptionsIsVisible();
-  };
-
   const optionOnClickHandler = (category: CategoryModel) => {
     if (category.id) {
       searchParams.set('categoryId', String(category.id));
@@ -40,7 +36,7 @@ const Filter = () => {
     searchParams.delete('page');
     setSearchParams(searchParams);
 
-    selectOnClickHandler();
+    filterStore.toggleOptionsIsVisible();
   };
 
   const options = categoriesStore.categories.map((category) => {
@@ -64,7 +60,10 @@ const Filter = () => {
 
   return (
     <div className={styles.filter}>
-      <div className={styles.filter__select} onClick={selectOnClickHandler}>
+      <div
+        className={styles.filter__select}
+        onClick={filterStore.toggleOptionsIsVisible}
+      >
         <img src={filter} alt="filter" />
         Filter
       </div>

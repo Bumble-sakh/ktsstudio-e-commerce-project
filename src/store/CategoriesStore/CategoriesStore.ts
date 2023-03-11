@@ -41,7 +41,6 @@ export default class CategoriesStore implements ILocalStore {
     }
 
     this._meta = Meta.loading;
-    this._categories = [];
 
     const response = await axios({
       method: API.METHOD.get,

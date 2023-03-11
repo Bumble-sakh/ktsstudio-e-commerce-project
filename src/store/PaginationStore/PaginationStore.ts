@@ -13,7 +13,7 @@ import {
 type PrivateFields = '_paginationPage' | '_limit' | '_offset' | '_total';
 
 export default class PaginationStore implements ILocalStore {
-  private _paginationPage: number = 1;
+  private _paginationPage: number = PAGINATION.defaultPageNumber;
   private _limit: number = PAGINATION.limit;
   private _total: number = 0;
   private _offset: number = (this._paginationPage - 1) * this._limit;
@@ -32,6 +32,7 @@ export default class PaginationStore implements ILocalStore {
 
       setPaginationPage: action.bound,
       setTotal: action.bound,
+      setDefaultPaginationPage: action.bound,
     });
   }
 
@@ -63,16 +64,16 @@ export default class PaginationStore implements ILocalStore {
     this._paginationPage = page;
   }
 
+  setDefaultPaginationPage(): void {
+    this._paginationPage = PAGINATION.defaultPageNumber;
+  }
+
   destroy() {}
 
   private readonly _qpReaction: IReactionDisposer = reaction(
     () => rootStore.queryParamsStore.getParam('page'),
     (page) => {
-      if (page) {
-        this.setPaginationPage(+page);
-      } else {
-        this.setPaginationPage(1);
-      }
+      page ? this.setPaginationPage(+page) : this.setDefaultPaginationPage();
     }
   );
 }

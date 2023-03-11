@@ -43,7 +43,7 @@ const Search = () => {
 
     rootStore.queryParamsStore.setSearch(searchParams.toString());
 
-    paginationStore.setPaginationPage(1);
+    paginationStore.setDefaultPaginationPage();
   };
 
   return (

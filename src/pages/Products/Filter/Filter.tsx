@@ -33,7 +33,7 @@ const Filter = () => {
         setSearchParams(searchParams);
       }
 
-      paginationStore.setPaginationPage(1);
+      paginationStore.setDefaultPaginationPage();
       searchParams.delete('page');
       setSearchParams(searchParams);
 

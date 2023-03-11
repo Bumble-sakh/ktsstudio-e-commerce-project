@@ -47,7 +47,7 @@ export default class FilterStore implements ILocalStore {
   private readonly _qpReaction: IReactionDisposer = reaction(
     () => rootStore.queryParamsStore.getParam('categoryId'),
     (id) => {
-      id && this.setCategoryId(+id);
+      id && this.setCategoryId(Number(id));
     }
   );
 }

@@ -1,8 +1,11 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 
 import searchIcon from '@assets/images/search.svg';
 import Button from '@components/Button';
 import rootStore from '@store/RootStore/instance';
+import SearchStore from '@store/SearchStore';
+import { useLocalStore } from '@utils/useLocalStore';
+import { observer } from 'mobx-react-lite';
 import { useSearchParams } from 'react-router-dom';
 
 import styles from './Search.module.scss';
@@ -12,22 +15,22 @@ const Search = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const context = useContext(ProductsPageContext);
 
-  const [value, setValue] = useState('');
+  const searchStore = useLocalStore(() => new SearchStore());
 
   useEffect(() => {
     const search = rootStore.queryParamsStore.getParam('search') ?? '';
-    setValue(search);
-  }, []);
+    searchStore.setInputValue(search);
+  }, [searchStore]);
 
   const onChangeHandler = (event: React.FormEvent<HTMLInputElement>) => {
-    setValue(event.currentTarget.value);
+    searchStore.setInputValue(event.currentTarget.value);
   };
 
   const onSubmitHandler = (e: React.SyntheticEvent) => {
     e.preventDefault();
 
-    if (value) {
-      searchParams.set('search', value);
+    if (searchStore.inputValue) {
+      searchParams.set('search', searchStore.inputValue);
       setSearchParams(searchParams);
     } else {
       searchParams.delete('search');
@@ -48,7 +51,7 @@ const Search = () => {
       <input
         type="search"
         className={styles.input}
-        value={value}
+        value={searchStore.inputValue}
         placeholder="Search property"
         onChange={onChangeHandler}
       />
@@ -57,4 +60,4 @@ const Search = () => {
   );
 };
 
-export default Search;
+export default observer(Search);

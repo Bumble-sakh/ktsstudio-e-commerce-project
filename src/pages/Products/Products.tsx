@@ -8,7 +8,6 @@ import { useQueryParamsStoreInit } from '@store/RootStore/hooks';
 import rootStore from '@store/RootStore/instance';
 import { Meta } from '@utils/Meta';
 import { useLocalStore } from '@utils/useLocalStore';
-import { runInAction } from 'mobx';
 import { observer } from 'mobx-react-lite';
 
 import Filter from './Filter';
@@ -32,15 +31,13 @@ const Products = () => {
   );
 
   useEffect(() => {
-    runInAction(() => {
-      const search = rootStore.queryParamsStore.getParam('search') ?? null;
-      const categoryId =
-        rootStore.queryParamsStore.getParam('categoryId') ?? null;
-      productsStore.getProducts({ categoryId, search });
+    const search = rootStore.queryParamsStore.getParam('search') ?? null;
+    const categoryId =
+      rootStore.queryParamsStore.getParam('categoryId') ?? null;
+    productsStore.getProducts({ categoryId, search });
 
-      const page = rootStore.queryParamsStore.getParam('page') ?? 1;
-      paginationStore.setPaginationPage(+page);
-    });
+    const page = rootStore.queryParamsStore.getParam('page') ?? 1;
+    paginationStore.setPaginationPage(+page);
   }, [productsStore, paginationStore]);
 
   return (

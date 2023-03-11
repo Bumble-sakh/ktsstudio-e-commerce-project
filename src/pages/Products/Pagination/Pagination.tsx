@@ -7,7 +7,6 @@ import PaginationStore from '@store/PaginationStore';
 import rootStore from '@store/RootStore/instance';
 import { useLocalStore } from '@utils/useLocalStore';
 import classNames from 'classnames';
-import { runInAction } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import { useSearchParams } from 'react-router-dom';
 
@@ -29,65 +28,54 @@ const Pagination: React.FC<PaginationProps> = ({ totalPages }) => {
   });
 
   useEffect(() => {
-    runInAction(() => {
-      const page = rootStore.queryParamsStore.getParam('page') ?? 1;
-      paginationStore.setPaginationPage(+page);
-    });
+    const page = rootStore.queryParamsStore.getParam('page') ?? 1;
+    paginationStore.setPaginationPage(+page);
   }, [paginationStore]);
 
-  const nextHandle = useCallback(
-    () =>
-      runInAction(() => {
-        const page =
-          paginationStore.paginationPage + 1 < totalPages
-            ? paginationStore.paginationPage + 1
-            : totalPages;
+  const nextHandle = useCallback(() => {
+    const page =
+      paginationStore.paginationPage + 1 < totalPages
+        ? paginationStore.paginationPage + 1
+        : totalPages;
 
-        paginationStore.setPaginationPage(page);
-        if (page > 1) {
-          searchParams.set('page', String(page));
-          setSearchParams(searchParams);
-        } else {
-          searchParams.delete('page');
-          setSearchParams(searchParams);
-        }
-      }),
-    [searchParams, setSearchParams, totalPages, paginationStore]
-  );
+    paginationStore.setPaginationPage(page);
+    if (page > 1) {
+      searchParams.set('page', String(page));
+      setSearchParams(searchParams);
+    } else {
+      searchParams.delete('page');
+      setSearchParams(searchParams);
+    }
+  }, [searchParams, setSearchParams, totalPages, paginationStore]);
 
-  const prevHandle = useCallback(
-    () =>
-      runInAction(() => {
-        const page =
-          paginationStore.paginationPage - 1 > 1
-            ? paginationStore.paginationPage - 1
-            : 1;
+  const prevHandle = useCallback(() => {
+    const page =
+      paginationStore.paginationPage - 1 > 1
+        ? paginationStore.paginationPage - 1
+        : 1;
 
-        paginationStore.setPaginationPage(page);
-        if (page > 1) {
-          searchParams.set('page', String(page));
-          setSearchParams(searchParams);
-        } else {
-          searchParams.delete('page');
-          setSearchParams(searchParams);
-        }
-      }),
-    [searchParams, setSearchParams, paginationStore]
-  );
+    paginationStore.setPaginationPage(page);
+    if (page > 1) {
+      searchParams.set('page', String(page));
+      setSearchParams(searchParams);
+    } else {
+      searchParams.delete('page');
+      setSearchParams(searchParams);
+    }
+  }, [searchParams, setSearchParams, paginationStore]);
 
   const onPageChange = useCallback(
-    (page: number) =>
-      runInAction(() => {
-        paginationStore.setPaginationPage(page);
+    (page: number) => {
+      paginationStore.setPaginationPage(page);
 
-        if (page > 1) {
-          searchParams.set('page', String(page));
-          setSearchParams(searchParams);
-        } else {
-          searchParams.delete('page');
-          setSearchParams(searchParams);
-        }
-      }),
+      if (page > 1) {
+        searchParams.set('page', String(page));
+        setSearchParams(searchParams);
+      } else {
+        searchParams.delete('page');
+        setSearchParams(searchParams);
+      }
+    },
     [searchParams, setSearchParams, paginationStore]
   );
 

@@ -7,7 +7,6 @@ import ProductStore from '@store/ProductStore';
 import RelatedStore from '@store/RelatedStore';
 import { Meta } from '@utils/Meta';
 import { useLocalStore } from '@utils/useLocalStore';
-import { runInAction } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import { useParams } from 'react-router-dom';
 
@@ -25,12 +24,10 @@ const Product = () => {
   }, [id, productStore]);
 
   useEffect(() => {
-    runInAction(() => {
-      if (productStore.product) {
-        const id = String(productStore.product.category.id);
-        relatedStore.getRelated(id);
-      }
-    });
+    if (productStore.product) {
+      const id = String(productStore.product.category.id);
+      relatedStore.getRelated(id);
+    }
   }, [relatedStore, productStore.product]);
 
   return (

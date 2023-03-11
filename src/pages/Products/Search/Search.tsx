@@ -5,7 +5,6 @@ import Button from '@components/Button';
 import PaginationStore from '@store/PaginationStore';
 import rootStore from '@store/RootStore/instance';
 import { useLocalStore } from '@utils/useLocalStore';
-import { runInAction } from 'mobx';
 import { useSearchParams } from 'react-router-dom';
 
 import styles from './Search.module.scss';
@@ -17,10 +16,8 @@ const Search = () => {
   const [value, setValue] = useState('');
 
   useEffect(() => {
-    runInAction(() => {
-      const search = rootStore.queryParamsStore.getParam('search') ?? '';
-      setValue(search);
-    });
+    const search = rootStore.queryParamsStore.getParam('search') ?? '';
+    setValue(search);
   }, []);
 
   const onChangeHandler = (event: React.FormEvent<HTMLInputElement>) => {

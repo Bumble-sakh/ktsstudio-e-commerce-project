@@ -50,7 +50,6 @@ export default class ProductStore implements ILocalStore {
     }
 
     this._meta = Meta.loading;
-    this._product = null;
 
     const response = await axios({
       method: API.METHOD.get,

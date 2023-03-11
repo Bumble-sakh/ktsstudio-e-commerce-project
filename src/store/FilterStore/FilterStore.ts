@@ -12,7 +12,7 @@ import {
 type PrivateFields = '_categoryId' | '_optionsIsVisible';
 
 export default class FilterStore implements ILocalStore {
-  private _categoryId: number = 0;
+  private _categoryId: number | null = null;
   private _optionsIsVisible: boolean = false;
 
   constructor() {

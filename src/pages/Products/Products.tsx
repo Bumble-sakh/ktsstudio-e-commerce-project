@@ -21,13 +21,9 @@ const Products = () => {
   const productsStore = useLocalStore(() => new ProductsStore());
   const paginationStore = useLocalStore(() => new PaginationStore());
 
-  const total = useMemo(
-    () => productsStore.products.length,
-    [productsStore.products.length]
-  );
   const totalPages = useMemo(
-    () => Math.ceil(total / paginationStore.limit),
-    [total, paginationStore.limit]
+    () => Math.ceil(productsStore.totalProducts / paginationStore.limit),
+    [productsStore.totalProducts, paginationStore.limit]
   );
 
   useEffect(() => {
@@ -61,7 +57,7 @@ const Products = () => {
             <h2 className={styles.total}>
               Total Product
               <span className={styles.total__count}>
-                {productsStore.products.length}
+                {productsStore.totalProducts}
               </span>
             </h2>
 

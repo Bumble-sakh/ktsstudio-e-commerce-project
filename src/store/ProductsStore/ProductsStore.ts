@@ -35,6 +35,7 @@ export default class ProductsStore implements ILocalStore {
       _categoryId: observable,
       products: computed,
       meta: computed,
+      totalProducts: computed,
       getProducts: action.bound,
     });
   }
@@ -45,6 +46,10 @@ export default class ProductsStore implements ILocalStore {
 
   get meta() {
     return this._meta;
+  }
+
+  get totalProducts() {
+    return this._products.length;
   }
 
   async getProducts(

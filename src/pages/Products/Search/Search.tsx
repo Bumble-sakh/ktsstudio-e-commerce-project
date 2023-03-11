@@ -1,17 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import searchIcon from '@assets/images/search.svg';
 import Button from '@components/Button';
-import PaginationStore from '@store/PaginationStore';
 import rootStore from '@store/RootStore/instance';
-import { useLocalStore } from '@utils/useLocalStore';
 import { useSearchParams } from 'react-router-dom';
 
 import styles from './Search.module.scss';
+import { ProductsPageContext } from '../Products';
 
 const Search = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const paginationStore = useLocalStore(() => new PaginationStore());
+  const context = useContext(ProductsPageContext);
 
   const [value, setValue] = useState('');
 
@@ -40,7 +39,7 @@ const Search = () => {
 
     rootStore.queryParamsStore.setSearch(searchParams.toString());
 
-    paginationStore.setDefaultPaginationPage();
+    context.paginationStore.setDefaultPaginationPage();
   };
 
   return (

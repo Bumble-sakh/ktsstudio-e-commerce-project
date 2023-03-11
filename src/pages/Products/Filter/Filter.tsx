@@ -1,20 +1,21 @@
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useContext, useEffect, useMemo } from 'react';
 
 import filter from '@assets/images/filter.svg';
 import CategoriesStore from '@store/CategoriesStore';
 import FilterStore from '@store/FilterStore';
 import { CategoryModel } from '@store/models/category';
-import PaginationStore from '@store/PaginationStore';
 import { useLocalStore } from '@utils/useLocalStore';
 import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
 import { useSearchParams } from 'react-router-dom';
 
 import styles from './Filter.module.scss';
+import { ProductsPageContext } from '../Products';
 
 const Filter = () => {
+  const context = useContext(ProductsPageContext);
+
   const categoriesStore = useLocalStore(() => new CategoriesStore());
-  const paginationStore = useLocalStore(() => new PaginationStore());
   const filterStore = useLocalStore(() => new FilterStore());
 
   const [searchParams, setSearchParams] = useSearchParams();
@@ -33,13 +34,13 @@ const Filter = () => {
         setSearchParams(searchParams);
       }
 
-      paginationStore.setDefaultPaginationPage();
+      context.paginationStore.setDefaultPaginationPage();
       searchParams.delete('page');
       setSearchParams(searchParams);
 
       filterStore.toggleOptionsIsVisible();
     },
-    [filterStore, paginationStore, searchParams, setSearchParams]
+    [filterStore, context.paginationStore, searchParams, setSearchParams]
   );
 
   const options = useMemo(() => {

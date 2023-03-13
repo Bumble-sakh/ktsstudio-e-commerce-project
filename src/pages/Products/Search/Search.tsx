@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useCallback } from 'react';
 
 import searchIcon from '@assets/images/search.svg';
 import Button from '@components/Button';
@@ -22,28 +22,39 @@ const Search = () => {
     searchStore.setInputValue(search);
   }, [searchStore]);
 
-  const onChangeHandler = (event: React.FormEvent<HTMLInputElement>) => {
-    searchStore.setInputValue(event.currentTarget.value);
-  };
+  const onChangeHandler = useCallback(
+    (event: React.FormEvent<HTMLInputElement>) => {
+      searchStore.setInputValue(event.currentTarget.value);
+    },
+    [searchStore]
+  );
 
-  const onSubmitHandler = (e: React.SyntheticEvent) => {
-    e.preventDefault();
+  const onSubmitHandler = useCallback(
+    (e: React.SyntheticEvent) => {
+      e.preventDefault();
 
-    if (searchStore.inputValue) {
-      searchParams.set('search', searchStore.inputValue);
+      if (searchStore.inputValue) {
+        searchParams.set('search', searchStore.inputValue);
+        setSearchParams(searchParams);
+      } else {
+        searchParams.delete('search');
+        setSearchParams(searchParams);
+      }
+
+      searchParams.delete('page');
       setSearchParams(searchParams);
-    } else {
-      searchParams.delete('search');
-      setSearchParams(searchParams);
-    }
 
-    searchParams.delete('page');
-    setSearchParams(searchParams);
+      rootStore.queryParamsStore.setSearch(searchParams.toString());
 
-    rootStore.queryParamsStore.setSearch(searchParams.toString());
-
-    context.paginationStore.setDefaultPaginationPage();
-  };
+      context.paginationStore.setDefaultPaginationPage();
+    },
+    [
+      context.paginationStore,
+      searchParams,
+      searchStore.inputValue,
+      setSearchParams,
+    ]
+  );
 
   return (
     <form className={styles.form} onSubmit={onSubmitHandler}>

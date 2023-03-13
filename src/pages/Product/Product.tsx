@@ -1,88 +1,48 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
-import Button from '@components/Button';
 import Card from '@components/Card';
 import Loader, { LoaderSize } from '@components/Loader';
-import { Product as ProductType } from '@pages/Products';
-import axios from 'axios';
+import ProductStore from '@store/ProductStore';
+import RelatedStore from '@store/RelatedStore';
+import { Meta } from '@utils/Meta';
+import { useLocalStore } from '@utils/useLocalStore';
+import { observer } from 'mobx-react-lite';
 import { useParams } from 'react-router-dom';
 
 import styles from './Product.module.scss';
-import Slider from './Slider';
+import ProductCard from './ProductCard';
 
 const Product = () => {
   const { id } = useParams();
-  const [product, setProduct] = useState<ProductType | null>(null);
-  const [related, setRelated] = useState<ProductType[]>([]);
-  const [productIsLoading, setProductIsLoading] = useState(true);
-  const [relatedIsLoading, setRelatedIsLoading] = useState(true);
+
+  const productStore = useLocalStore(() => new ProductStore());
+  const relatedStore = useLocalStore(() => new RelatedStore());
 
   useEffect(() => {
-    const fetch = async () => {
-      const result = await axios({
-        method: 'get',
-        baseURL: 'https://api.escuelajs.co/api/v1',
-        url: `/products/${id}`,
-      });
-
-      setProduct(result.data);
-      setProductIsLoading(false);
-    };
-
-    fetch();
-  }, [id]);
+    id && productStore.getProduct(id);
+  }, [id, productStore]);
 
   useEffect(() => {
-    const fetch = async () => {
-      const result = await axios({
-        method: 'get',
-        baseURL: 'https://api.escuelajs.co/api/v1',
-        url: '/products',
-        params: {
-          categoryId: product?.category.id,
-          offset: 0,
-          limit: 6,
-        },
-      });
-      setRelated(result.data);
-      setRelatedIsLoading(false);
-    };
-
-    fetch();
-  }, [product]);
+    if (productStore.product) {
+      const id = String(productStore.product.category.id);
+      relatedStore.getRelated(id);
+    }
+  }, [relatedStore, productStore.product]);
 
   return (
     <section className={styles.section}>
       <div className={`${styles.section__wrapper} wrapper`}>
-        {productIsLoading ? (
-          <Loader size={LoaderSize.l} />
-        ) : (
-          <div className={styles.product}>
-            {product && <Slider images={product.images} />}
+        {productStore.meta === Meta.loading && <Loader size={LoaderSize.l} />}
 
-            <div className={styles.product__content}>
-              <div className={styles.product__title}>{product?.title}</div>
-              <div className={styles.product__subtitle}>
-                {product?.description}
-              </div>
-              <div
-                className={styles.product__price}
-              >{`$${product?.price}`}</div>
-              <div className={styles.product__buttons}>
-                <Button>Buy Now</Button>
-                <Button>Add to Cart</Button>
-              </div>
-            </div>
-          </div>
-        )}
+        {productStore.product && <ProductCard product={productStore.product} />}
 
         <h2 className={styles.title}>Related Items</h2>
 
-        {relatedIsLoading ? (
+        {relatedStore.meta === Meta.loading ? (
           <Loader size={LoaderSize.l} />
         ) : (
           <ul className={styles.cards}>
-            {related.map((product) => (
+            {relatedStore.related.map((product) => (
               <Card key={product.id} product={product} />
             ))}
           </ul>
@@ -92,4 +52,4 @@ const Product = () => {
   );
 };
 
-export default Product;
+export default observer(Product);

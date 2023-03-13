@@ -1,37 +1,43 @@
-import { useCallback } from 'react';
+import { useCallback, useContext, useEffect } from 'react';
 
 import next from '@assets/images/next.svg';
 import prev from '@assets/images/prev.svg';
 import PAGINATION from '@config/pagination';
+import rootStore from '@store/RootStore/instance';
 import classNames from 'classnames';
+import { observer } from 'mobx-react-lite';
 import { useSearchParams } from 'react-router-dom';
 
 import styles from './Pagination.module.scss';
 import { usePagination } from './usePagination';
+import { ProductsPageContext } from '../Products';
 
 type PaginationProps = {
   totalPages: number;
-  paginationPage: number;
-  setPaginationPage: React.Dispatch<React.SetStateAction<number>>;
 };
 
-const Pagination: React.FC<PaginationProps> = ({
-  totalPages,
-  paginationPage,
-  setPaginationPage,
-}) => {
+const Pagination: React.FC<PaginationProps> = ({ totalPages }) => {
   const [searchParams, setSearchParams] = useSearchParams();
 
+  const context = useContext(ProductsPageContext);
+
   const paginationRange = usePagination({
-    currentPage: paginationPage,
+    currentPage: context.paginationStore.paginationPage,
     totalPages,
   });
 
+  useEffect(() => {
+    const page = rootStore.queryParamsStore.getParam('page') ?? 1;
+    context.paginationStore.setPaginationPage(+page);
+  }, [context.paginationStore]);
+
   const nextHandle = useCallback(() => {
     const page =
-      paginationPage + 1 < totalPages ? paginationPage + 1 : totalPages;
+      context.paginationStore.paginationPage + 1 < totalPages
+        ? context.paginationStore.paginationPage + 1
+        : totalPages;
 
-    setPaginationPage(page);
+    context.paginationStore.setPaginationPage(page);
     if (page > 1) {
       searchParams.set('page', String(page));
       setSearchParams(searchParams);
@@ -39,18 +45,15 @@ const Pagination: React.FC<PaginationProps> = ({
       searchParams.delete('page');
       setSearchParams(searchParams);
     }
-  }, [
-    paginationPage,
-    searchParams,
-    setPaginationPage,
-    setSearchParams,
-    totalPages,
-  ]);
+  }, [searchParams, setSearchParams, totalPages, context.paginationStore]);
 
   const prevHandle = useCallback(() => {
-    const page = paginationPage - 1 > 1 ? paginationPage - 1 : 1;
+    const page =
+      context.paginationStore.paginationPage - 1 > 1
+        ? context.paginationStore.paginationPage - 1
+        : 1;
 
-    setPaginationPage(page);
+    context.paginationStore.setPaginationPage(page);
     if (page > 1) {
       searchParams.set('page', String(page));
       setSearchParams(searchParams);
@@ -58,11 +61,11 @@ const Pagination: React.FC<PaginationProps> = ({
       searchParams.delete('page');
       setSearchParams(searchParams);
     }
-  }, [paginationPage, searchParams, setPaginationPage, setSearchParams]);
+  }, [searchParams, setSearchParams, context.paginationStore]);
 
   const onPageChange = useCallback(
     (page: number) => {
-      setPaginationPage(page);
+      context.paginationStore.setPaginationPage(page);
 
       if (page > 1) {
         searchParams.set('page', String(page));
@@ -72,14 +75,14 @@ const Pagination: React.FC<PaginationProps> = ({
         setSearchParams(searchParams);
       }
     },
-    [searchParams, setPaginationPage, setSearchParams]
+    [searchParams, setSearchParams, context.paginationStore]
   );
 
   return (
     <div className={styles.pagination}>
       <div
         className={classNames(styles.prev, {
-          [styles.prev_disabled]: paginationPage === 1,
+          [styles.prev_disabled]: context.paginationStore.paginationPage === 1,
         })}
         onClick={prevHandle}
       >
@@ -100,7 +103,8 @@ const Pagination: React.FC<PaginationProps> = ({
             <li
               key={idx}
               className={classNames(styles.page, {
-                [styles.page_selected]: pageNumber === paginationPage,
+                [styles.page_selected]:
+                  pageNumber === context.paginationStore.paginationPage,
               })}
               onClick={() => onPageChange(pageNumber)}
             >
@@ -112,7 +116,8 @@ const Pagination: React.FC<PaginationProps> = ({
 
       <div
         className={classNames(styles.next, {
-          [styles.next_disabled]: paginationPage === totalPages,
+          [styles.next_disabled]:
+            context.paginationStore.paginationPage === totalPages,
         })}
         onClick={nextHandle}
       >
@@ -122,4 +127,4 @@ const Pagination: React.FC<PaginationProps> = ({
   );
 };
 
-export default Pagination;
+export default observer(Pagination);

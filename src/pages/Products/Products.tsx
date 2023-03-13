@@ -1,147 +1,97 @@
-import { useEffect, useMemo, useState } from 'react';
+import { createContext, useEffect, useMemo } from 'react';
 
 import Card from '@components/Card';
 import Loader, { LoaderSize } from '@components/Loader';
-import PAGINATION from '@config/pagination';
-import axios from 'axios';
-import { useSearchParams } from 'react-router-dom';
+import PaginationStore from '@store/PaginationStore';
+import ProductsStore from '@store/ProductsStore';
+import { useQueryParamsStoreInit } from '@store/RootStore/hooks';
+import rootStore from '@store/RootStore/instance';
+import { Meta } from '@utils/Meta';
+import { useLocalStore } from '@utils/useLocalStore';
+import { observer } from 'mobx-react-lite';
 
-import Filter from './Filter';
+import FiltersBar from './FiltersBar';
 import Pagination from './Pagination';
 import styles from './Products.module.scss';
-import Search from './Search';
 
-export type Category = {
-  id: number;
-  name: string;
-  image: string;
+type DefaultProductsPageContextType = {
+  productsStore: ProductsStore;
+  paginationStore: PaginationStore;
 };
 
-export type Product = {
-  id: number;
-  title: string;
-  price: number;
-  description: string;
-  category: Category;
-  images: string[];
-};
+export const ProductsPageContext = createContext(
+  {} as DefaultProductsPageContextType
+);
 
 const Products = () => {
-  const [searchParams] = useSearchParams();
+  useQueryParamsStoreInit();
 
-  const [productsIsLoading, setProductsIsLoading] = useState(true);
+  const productsStore = useLocalStore(() => new ProductsStore());
+  const paginationStore = useLocalStore(() => new PaginationStore());
 
-  const [products, setProducts] = useState<Product[]>([]);
-  const [categories, setCategories] = useState<Category[]>([]);
+  const defaultProductsPageContext = {
+    productsStore,
+    paginationStore,
+  };
 
-  const [categoryId, setCategoryId] = useState<number | null>(
-    searchParams.get('categoryId')
-      ? Number(searchParams.get('categoryId'))
-      : null
-  );
-  const [searchProperty, setSearchProperty] = useState<string | null>(
-    searchParams.get('title')
-  );
-
-  const limit = useMemo(() => PAGINATION.limit, []);
-  const total = useMemo(() => products.length, [products.length]);
-  const totalPages = useMemo(() => Math.ceil(total / limit), [total, limit]);
-  const [paginationPage, setPaginationPage] = useState<number>(
-    searchParams.get('page') ? Number(searchParams.get('page')) : 1
-  );
-  const offset = useMemo(
-    () => (paginationPage - 1) * limit,
-    [paginationPage, limit]
+  const totalPages = useMemo(
+    () => Math.ceil(productsStore.totalProducts / paginationStore.limit),
+    [productsStore.totalProducts, paginationStore.limit]
   );
 
   useEffect(() => {
-    const fetch = async () => {
-      const result = await axios({
-        method: 'get',
-        baseURL: 'https://api.escuelajs.co/api/v1',
-        url: '/products',
-        params: {
-          categoryId: categoryId ? Number(categoryId) : null,
-          title: searchProperty ? searchProperty : null,
-        },
-      });
+    const search = rootStore.queryParamsStore.getParam('search') ?? null;
+    const categoryId =
+      rootStore.queryParamsStore.getParam('categoryId') ?? null;
+    productsStore.getProducts({ categoryId, search });
 
-      setProducts(result.data);
-      setProductsIsLoading(false);
-    };
-
-    setProductsIsLoading(true);
-    fetch();
-  }, [categoryId, searchProperty]);
-
-  useEffect(() => {
-    const fetch = async () => {
-      const result = await axios({
-        method: 'get',
-        baseURL: 'https://api.escuelajs.co/api/v1',
-        url: '/categories',
-      });
-
-      const categoryAll: Category = {
-        id: 0,
-        name: 'All',
-        image: '',
-      };
-      setCategories([categoryAll, ...result.data]);
-    };
-
-    fetch();
-  }, []);
+    const page = rootStore.queryParamsStore.getParam('page') ?? 1;
+    paginationStore.setPaginationPage(+page);
+  }, [productsStore, paginationStore]);
 
   return (
-    <section className={styles.section}>
-      <div className={`${styles.section__wrapper} wrapper`}>
-        <h1 className={styles.title}>Products</h1>
-        <p className={styles.subtitle}>
-          We display products based on the latest products we have, if you want
-          to see our old products please enter the name of the item
-        </p>
+    <ProductsPageContext.Provider value={defaultProductsPageContext}>
+      <section className={styles.section}>
+        <div className={`${styles.section__wrapper} wrapper`}>
+          <h1 className={styles.title}>Products</h1>
+          <p className={styles.subtitle}>
+            We display products based on the latest products we have, if you
+            want to see our old products please enter the name of the item
+          </p>
 
-        <div className={styles.bar}>
-          <Search
-            onChange={setSearchProperty}
-            setPaginationPage={setPaginationPage}
-          />
-          <Filter
-            categories={categories}
-            categoryId={categoryId}
-            setCategoryId={setCategoryId}
-            setPaginationPage={setPaginationPage}
-          />
+          <FiltersBar />
+
+          {productsStore.meta === Meta.loading ? (
+            <Loader size={LoaderSize.l} />
+          ) : (
+            <>
+              <h2 className={styles.total}>
+                Total Product
+                <span className={styles.total__count}>
+                  {productsStore.totalProducts}
+                </span>
+              </h2>
+
+              <ul className={styles.cards}>
+                {productsStore.products
+                  .slice(
+                    paginationStore.offset,
+                    paginationStore.offset + paginationStore.limit
+                  )
+                  .map((product) => (
+                    <Card key={product.id} product={product} />
+                  ))}
+              </ul>
+
+              {productsStore.products.length > paginationStore.limit && (
+                <Pagination totalPages={totalPages} />
+              )}
+            </>
+          )}
         </div>
-
-        {productsIsLoading ? (
-          <Loader size={LoaderSize.l} />
-        ) : (
-          <>
-            <h2 className={styles.total}>
-              Total Product
-              <span className={styles.total__count}>{products.length}</span>
-            </h2>
-
-            <ul className={styles.cards}>
-              {products.slice(offset, offset + limit).map((product) => (
-                <Card key={product.id} product={product} />
-              ))}
-            </ul>
-
-            {products.length > limit && (
-              <Pagination
-                totalPages={totalPages}
-                paginationPage={paginationPage}
-                setPaginationPage={setPaginationPage}
-              />
-            )}
-          </>
-        )}
-      </div>
-    </section>
+      </section>
+    </ProductsPageContext.Provider>
   );
 };
 
-export default Products;
+export default observer(Products);

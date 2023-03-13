@@ -10,10 +10,9 @@ import { Meta } from '@utils/Meta';
 import { useLocalStore } from '@utils/useLocalStore';
 import { observer } from 'mobx-react-lite';
 
-import Filter from './Filter';
+import FiltersBar from './FiltersBar';
 import Pagination from './Pagination';
 import styles from './Products.module.scss';
-import Search from './Search';
 
 type DefaultProductsPageContextType = {
   productsStore: ProductsStore;
@@ -60,10 +59,7 @@ const Products = () => {
             want to see our old products please enter the name of the item
           </p>
 
-          <div className={styles.bar}>
-            <Search />
-            <Filter />
-          </div>
+          <FiltersBar />
 
           {productsStore.meta === Meta.loading ? (
             <Loader size={LoaderSize.l} />

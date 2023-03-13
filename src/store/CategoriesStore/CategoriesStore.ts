@@ -23,6 +23,7 @@ export default class CategoriesStore implements ILocalStore {
       _meta: observable,
       categories: computed,
       meta: computed,
+      totalCategories: computed,
       getCategories: action.bound,
     });
   }
@@ -33,6 +34,10 @@ export default class CategoriesStore implements ILocalStore {
 
   get meta() {
     return this._meta;
+  }
+
+  get totalCategories() {
+    return this._categories.length;
   }
 
   async getCategories(): Promise<void> {

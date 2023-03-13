@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 
-import Button from '@components/Button';
 import Card from '@components/Card';
 import Loader, { LoaderSize } from '@components/Loader';
 import ProductStore from '@store/ProductStore';
@@ -11,7 +10,7 @@ import { observer } from 'mobx-react-lite';
 import { useParams } from 'react-router-dom';
 
 import styles from './Product.module.scss';
-import Slider from './Slider';
+import ProductCard from './ProductCard';
 
 const Product = () => {
   const { id } = useParams();
@@ -33,31 +32,9 @@ const Product = () => {
   return (
     <section className={styles.section}>
       <div className={`${styles.section__wrapper} wrapper`}>
-        {productStore.meta === Meta.loading ? (
-          <Loader size={LoaderSize.l} />
-        ) : (
-          <div className={styles.product}>
-            {productStore.product && (
-              <Slider images={productStore.product.images} />
-            )}
+        {productStore.meta === Meta.loading && <Loader size={LoaderSize.l} />}
 
-            <div className={styles.product__content}>
-              <div className={styles.product__title}>
-                {productStore.product?.title}
-              </div>
-              <div className={styles.product__subtitle}>
-                {productStore.product?.description}
-              </div>
-              <div
-                className={styles.product__price}
-              >{`$${productStore.product?.price}`}</div>
-              <div className={styles.product__buttons}>
-                <Button>Buy Now</Button>
-                <Button>Add to Cart</Button>
-              </div>
-            </div>
-          </div>
-        )}
+        {productStore.product && <ProductCard product={productStore.product} />}
 
         <h2 className={styles.title}>Related Items</h2>
 

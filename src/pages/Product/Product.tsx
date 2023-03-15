@@ -18,6 +18,8 @@ const Product = () => {
   const productStore = useLocalStore(() => new ProductStore());
   const relatedStore = useLocalStore(() => new RelatedStore());
 
+  window.scrollTo(0, 0);
+
   useEffect(() => {
     id && productStore.getProduct(id);
   }, [id, productStore]);

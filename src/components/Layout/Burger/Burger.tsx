@@ -20,15 +20,17 @@ const Burger: React.FC<React.PropsWithChildren> = ({ children }) => {
         <span></span>
         <span></span>
       </div>
-      <div
-        className={classNames({
-          [styles.sideBar]: true,
-          [styles.sideBar_opened]: isOpen,
-        })}
-        onClick={() => setIsOpen((prev) => !prev)}
-      >
-        {children}
-      </div>
+      {isOpen && (
+        <div
+          className={classNames({
+            [styles.sideBar]: true,
+            [styles.sideBar_opened]: isOpen,
+          })}
+          onClick={() => setIsOpen((prev) => !prev)}
+        >
+          {children}
+        </div>
+      )}
     </>
   );
 };

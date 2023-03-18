@@ -52,7 +52,7 @@
   }
 }
 
-.sideBar {
+.sidebar {
   position: absolute;
   top: 0px;
   right: 0px;
@@ -72,10 +72,6 @@
   gap: 40px;
   box-shadow: 0px 4px 20px rgb(175 173 181 / 20%);
 
-  &_opened {
-    transform: translateY(0);
-  }
-
   & nav {
     height: auto;
 
@@ -84,4 +80,20 @@
       height: auto;
     }
   }
+}
+
+.animation-entering {
+  transform: translateY(0);
+}
+
+.animation-entered {
+  transform: translateY(0);
+}
+
+.animation-exiting {
+  transform: translateX(120%);
+}
+
+.animation-exited {
+  transform: translateX(120%);
 }

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, createRef } from 'react';
 
 import next from '@assets/images/next.svg';
 import prev from '@assets/images/prev.svg';
@@ -12,6 +12,7 @@ type SliderProps = {
 
 const Slider: React.FC<SliderProps> = ({ images }) => {
   const [slide, setSlide] = useState(0);
+  const refs = Array(images.length).fill(createRef());
 
   const slideLeft = () => {
     const nextSlide = slide - 1;
@@ -30,18 +31,22 @@ const Slider: React.FC<SliderProps> = ({ images }) => {
   return (
     <div className={styles.slider}>
       <div className={styles.images}>
-        <TransitionGroup>
+        <TransitionGroup component={null}>
           <CSSTransition
+            nodeRef={refs[slide]}
             key={images[slide]}
             timeout={500}
             classNames={{
+              enter: styles['image-enter'],
               enterActive: styles['image-enter-active'],
-              enterDone: styles['image-enter'],
+              enterDone: styles['image-enter-done'],
+              exit: styles['image-exit'],
               exitActive: styles['image-exit-active'],
-              exitDone: styles['image-exit'],
+              exitDone: styles['image-exit-done'],
             }}
           >
             <img
+              ref={refs[slide]}
               src={images[slide]}
               alt={`Slide ${slide}`}
               className={styles.image}

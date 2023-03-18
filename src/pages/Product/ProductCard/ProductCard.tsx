@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import React, { FC } from 'react';
 
 import Button from '@components/Button';
 import { ProductModel } from '@store/models/product';
@@ -28,4 +28,4 @@ const ProductCard: FC<ProductCardType> = ({ product }) => {
   );
 };
 
-export default ProductCard;
+export default React.memo(ProductCard);

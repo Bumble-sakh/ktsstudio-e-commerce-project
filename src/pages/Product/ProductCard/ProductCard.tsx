@@ -2,6 +2,8 @@ import React, { FC } from 'react';
 
 import Button from '@components/Button';
 import { ProductModel } from '@store/models/product';
+import rootStore from '@store/RootStore/instance';
+import { observer } from 'mobx-react-lite';
 
 import styles from './ProductCard.module.scss';
 import Slider from '../Slider';
@@ -11,6 +13,16 @@ export type ProductCardType = {
 };
 
 const ProductCard: FC<ProductCardType> = ({ product }) => {
+  rootStore.cartStore.currentProduct = product.id;
+
+  const addToCartHandler = () => {
+    rootStore.cartStore.addToCart(product.id);
+  };
+
+  const removeFromCartHandler = () => {
+    rootStore.cartStore.removeFromCart(product.id);
+  };
+
   return (
     <div className={styles.product}>
       <Slider images={product.images} />
@@ -21,11 +33,25 @@ const ProductCard: FC<ProductCardType> = ({ product }) => {
         <div className={styles.product__price}>{`$${product?.price}`}</div>
         <div className={styles.product__buttons}>
           <Button>Buy Now</Button>
-          <Button>Add to Cart</Button>
+          {!rootStore.cartStore.productAmount && (
+            <Button
+              className={styles.product__buttons_white}
+              onClick={addToCartHandler}
+            >
+              Add to Cart
+            </Button>
+          )}
+          {rootStore.cartStore.productAmount && (
+            <div className={styles['product__buttons-group']}>
+              <Button onClick={removeFromCartHandler}>-</Button>
+              <div>{rootStore.cartStore.productAmount}</div>
+              <Button onClick={addToCartHandler}>+</Button>
+            </div>
+          )}
         </div>
       </div>
     </div>
   );
 };
 
-export default React.memo(ProductCard);
+export default observer(ProductCard);

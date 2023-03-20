@@ -1,4 +1,4 @@
-import React, { useState, FC, PropsWithChildren } from 'react';
+import React, { useState, FC, PropsWithChildren, useRef } from 'react';
 
 import classNames from 'classnames';
 import { Transition } from 'react-transition-group';
@@ -7,6 +7,7 @@ import styles from './Burger.module.scss';
 
 const Burger: FC<PropsWithChildren> = ({ children }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const nodeRef = useRef(null);
 
   return (
     <>
@@ -22,7 +23,13 @@ const Burger: FC<PropsWithChildren> = ({ children }) => {
         <span></span>
       </div>
 
-      <Transition in={isOpen} timeout={300} mountOnEnter unmountOnExit>
+      <Transition
+        in={isOpen}
+        timeout={300}
+        mountOnEnter
+        unmountOnExit
+        nodeRef={nodeRef}
+      >
         {(state) => (
           <div
             className={classNames(styles.sidebar, styles[`animation-${state}`])}

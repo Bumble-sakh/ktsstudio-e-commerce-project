@@ -1,5 +1,7 @@
 import React, { FC } from 'react';
 
+import minus from '@assets/images/minus.svg';
+import plus from '@assets/images/plus.svg';
 import Button from '@components/Button';
 import { ProductModel } from '@store/models/product';
 import rootStore from '@store/RootStore/instance';
@@ -43,9 +45,13 @@ const ProductCard: FC<ProductCardType> = ({ product }) => {
           )}
           {rootStore.cartStore.productAmount && (
             <div className={styles['product__buttons-group']}>
-              <Button onClick={removeFromCartHandler}>-</Button>
+              <Button onClick={removeFromCartHandler}>
+                <img src={minus} alt="minus" />
+              </Button>
               <div>{rootStore.cartStore.productAmount}</div>
-              <Button onClick={addToCartHandler}>+</Button>
+              <Button onClick={addToCartHandler}>
+                <img src={plus} alt="plus" />
+              </Button>
             </div>
           )}
         </div>

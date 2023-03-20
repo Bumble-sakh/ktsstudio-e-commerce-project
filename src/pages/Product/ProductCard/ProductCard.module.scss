@@ -65,6 +65,10 @@
     & button {
       width: calc((100% - 20px) / 2);
       flex-grow: 1;
+
+      @include tab-media {
+        width: auto;
+      }
     }
 
     &_white {
@@ -92,6 +96,10 @@
     border-top: 2px solid colors.$grey;
     border-bottom: 2px solid colors.$grey;
 
+    @include tab-media {
+      width: auto;
+    }
+
     & button {
       min-width: auto;
       flex-grow: 0;
@@ -100,13 +108,22 @@
       background-color: colors.$white;
       color: colors.$title;
       border: 2px solid colors.$grey;
+
+      &:active {
+        transform: scale(0.95);
+      }
+
+      & img {
+        width: 24px;
+        height: 24px;
+      }
     }
 
     & div {
-      // width: 100%;
-      // height: 100%;
       text-align: center;
-      // border: 2px solid colors.$grey;
+      font-weight: 700;
+      font-size: 1.125rem;
+      line-height: 130%;
     }
   }
 

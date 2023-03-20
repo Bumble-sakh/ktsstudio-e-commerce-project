@@ -5,7 +5,7 @@
   height: 30px;
   transform: rotate(0deg);
   cursor: pointer;
-  z-index: 150;
+  z-index: 400;
 
   & span {
     display: block;
@@ -57,7 +57,7 @@
   top: 0px;
   right: 0px;
   bottom: 0px;
-  z-index: 100;
+  z-index: 300;
   display: block;
   width: 375px;
   max-width: 100%;

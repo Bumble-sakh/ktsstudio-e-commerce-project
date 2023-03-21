@@ -80,20 +80,34 @@
       height: auto;
     }
   }
-}
 
-.animation-entering {
-  transform: translateY(0);
-}
+  &-enter {
+    transform: translateY(0);
+    transition: transform 0.3s linear;
+  }
 
-.animation-entered {
-  transform: translateY(0);
-}
+  &-enter-active {
+    transform: translateY(0);
+    transition: transform 0.3s linear;
+  }
 
-.animation-exiting {
-  transform: translateX(120%);
-}
+  &-enter-done {
+    transform: translateY(0);
+    transition: transform 0.3s linear;
+  }
 
-.animation-exited {
-  transform: translateX(120%);
+  &-exit {
+    transform: translateX(120%);
+    transition: transform 0.3s linear;
+  }
+
+  &-exit-active {
+    transform: translateX(120%);
+    transition: transform 0.3s linear;
+  }
+
+  &-exit-done {
+    transform: translateX(120%);
+    transition: transform 0.3s linear;
+  }
 }

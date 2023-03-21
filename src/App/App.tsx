@@ -3,6 +3,7 @@ import React from 'react';
 import Layout from '@components/Layout';
 import ROUTES from '@config/routes';
 import About from '@pages/About';
+import Cart from '@pages/Cart';
 import Categories from '@pages/Categories';
 import Product from '@pages/Product';
 import Products from '@pages/Products';
@@ -16,6 +17,7 @@ function App() {
           <Route path={`${ROUTES.product}/:id`} element={<Product />} />
           <Route path={ROUTES.categories} element={<Categories />} />
           <Route path={ROUTES.about} element={<About />} />
+          <Route path={ROUTES.cart} element={<Cart />} />
           <Route
             path={ROUTES.all}
             element={<Navigate to={ROUTES.index} replace />}

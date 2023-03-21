@@ -18,11 +18,11 @@ const ProductCard: FC<ProductCardType> = ({ product }) => {
   rootStore.cartStore.currentProduct = product.id;
 
   const addToCartHandler = () => {
-    rootStore.cartStore.addToCart(product.id);
+    rootStore.cartStore.addToCart(product);
   };
 
   const removeFromCartHandler = () => {
-    rootStore.cartStore.removeFromCart(product.id);
+    rootStore.cartStore.removeFromCart(product);
   };
 
   return (

@@ -1,3 +1,4 @@
+import { ProductModel } from '@store/models/product';
 import { ILocalStore } from '@utils/useLocalStore';
 import {
   action,
@@ -9,22 +10,32 @@ import {
   toJS,
 } from 'mobx';
 
-type PrivateFields = '_currentProduct' | '_order' | '_amount';
+type Entity = {
+  product: ProductModel;
+  amount: number;
+};
+
+// type PrivateFields = '_currentProduct' | '_order' | '_amount';
+type PrivateFields = '_currentProduct' | '_order' | '_entities';
 
 export default class CartStore implements ILocalStore {
   private _order: number[] = [];
-  private _amount: Record<number, number> = {};
+  private _entities: Record<number, Entity> = {};
+  // private _amount: Record<number, number> = {};
   private _currentProduct: number | null = null;
 
   constructor() {
     makeObservable<CartStore, PrivateFields>(this, {
       _order: observable,
-      _amount: observable,
+      // _amount: observable,
+      _entities: observable,
       _currentProduct: observable,
-      amount: computed,
+      // amount: computed,
+      entities: computed,
       productsAmount: computed,
       productAmount: computed,
       currentProduct: computed,
+      totalPrice: computed,
       addToCart: action.bound,
       removeFromCart: action.bound,
     });
@@ -50,35 +61,71 @@ export default class CartStore implements ILocalStore {
     this._currentProduct = id;
   }
 
-  get amount() {
-    return this._amount;
+  // get amount() {
+  //   return this._amount;
+  // }
+
+  get entities() {
+    return this._entities;
   }
 
   get productAmount(): number | null {
+    // return this._currentProduct
+    //   ? toJS(this._amount)[this._currentProduct]
+    //   : null;
+
     return this._currentProduct
-      ? toJS(this._amount)[this._currentProduct]
+      ? toJS(this._entities)[this._currentProduct]?.amount
       : null;
   }
 
-  addToCart(id: number) {
+  get totalPrice() {
+    return this._order.reduce((acc, id) => {
+      acc += this._entities[id].amount * this._entities[id].product.price;
+      return acc;
+    }, 0);
+  }
+
+  addToCart(product: ProductModel) {
+    const { id } = product;
+
     if (!this._order.includes(id)) {
       set(this._order, this._order.length, id);
-      set(this._amount, id, 1);
+      // set(this._amount, id, 1);
+      set(this._entities, id, { amount: 1, product });
     } else {
-      set(this._amount, id, this._amount[id] + 1);
+      // set(this._amount, id, this._amount[id] + 1);
+      set(this._entities, id, {
+        amount: this._entities[id].amount + 1,
+        product,
+      });
     }
   }
 
-  removeFromCart(id: number) {
+  removeFromCart(product: ProductModel) {
+    const { id } = product;
+
+    // const index = this._order.indexOf(id);
+    // if (index !== -1) {
+    //   const amount = this._amount[id] - 1;
+
+    //   set(this._amount, id, amount);
+
+    //   if (amount <= 0) {
+    //     remove(this._order, String(index));
+    //     remove(this._amount, String(id));
+    //   }
+    // }
+
     const index = this._order.indexOf(id);
     if (index !== -1) {
-      const amount = this._amount[id] - 1;
+      const amount = this._entities[id].amount - 1;
 
-      set(this._amount, id, amount);
+      set(this._entities[id], { amount });
 
       if (amount <= 0) {
         remove(this._order, String(index));
-        remove(this._amount, String(id));
+        remove(this._entities, String(id));
       }
     }
   }

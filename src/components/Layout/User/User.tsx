@@ -1,7 +1,9 @@
 import cart from '@assets/images/cart.svg';
 import user from '@assets/images/user.svg';
+import ROUTES from '@config/routes';
 import rootStore from '@store/RootStore/instance';
 import { observer } from 'mobx-react-lite';
+import { NavLink } from 'react-router-dom';
 
 import styles from './User.module.scss';
 
@@ -10,8 +12,10 @@ const User = () => {
     <div className={styles.user}>
       <ul className={styles.list}>
         <li className={styles.list__item}>
-          <img src={cart} alt="cart" />
-          <div>{rootStore.cartStore.productsAmount}</div>
+          <NavLink to={ROUTES.cart}>
+            <img src={cart} alt="cart" />
+            <div>{rootStore.cartStore.productsAmount}</div>
+          </NavLink>
         </li>
         <li className={styles.list__item}>
           <img src={user} alt="user" />

@@ -1,0 +1,35 @@
+{
+  "files": {
+    "main.css": "/ktsstudio-e-commerce-project/static/css/main.15cc6406.css",
+    "main.js": "/ktsstudio-e-commerce-project/static/js/main.b6715838.js",
+    "static/media/EudoxusSans-Bold.woff": "/ktsstudio-e-commerce-project/static/media/EudoxusSans-Bold.9e36cdea0e27e202b3ff.woff",
+    "static/media/EudoxusSans-Medium.woff": "/ktsstudio-e-commerce-project/static/media/EudoxusSans-Medium.b8e22bfe93fc3c4204ff.woff",
+    "static/media/EudoxusSans-ExtraBold.woff": "/ktsstudio-e-commerce-project/static/media/EudoxusSans-ExtraBold.87ebf43eae61d890f7c8.woff",
+    "static/media/EudoxusSans-Light.woff": "/ktsstudio-e-commerce-project/static/media/EudoxusSans-Light.a51a8ba52424c9834c8d.woff",
+    "static/media/EudoxusSans-Regular.woff": "/ktsstudio-e-commerce-project/static/media/EudoxusSans-Regular.2a42c9a481d3dd243e99.woff",
+    "static/media/EudoxusSans-ExtraLight.woff": "/ktsstudio-e-commerce-project/static/media/EudoxusSans-ExtraLight.5d89ed74b24a5eb9b334.woff",
+    "static/media/EudoxusSans-Medium.woff2": "/ktsstudio-e-commerce-project/static/media/EudoxusSans-Medium.53ba53b35ab525cb14a3.woff2",
+    "static/media/EudoxusSans-Bold.woff2": "/ktsstudio-e-commerce-project/static/media/EudoxusSans-Bold.16f817e3b4fe9561a876.woff2",
+    "static/media/EudoxusSans-ExtraBold.woff2": "/ktsstudio-e-commerce-project/static/media/EudoxusSans-ExtraBold.2fcf9e5e6c8afaacb699.woff2",
+    "static/media/EudoxusSans-Light.woff2": "/ktsstudio-e-commerce-project/static/media/EudoxusSans-Light.32134ac24fbc60c70893.woff2",
+    "static/media/EudoxusSans-Regular.woff2": "/ktsstudio-e-commerce-project/static/media/EudoxusSans-Regular.046824804585a7aa0fab.woff2",
+    "static/media/EudoxusSans-ExtraLight.woff2": "/ktsstudio-e-commerce-project/static/media/EudoxusSans-ExtraLight.dc79939fd8299f524700.woff2",
+    "static/media/logo.svg": "/ktsstudio-e-commerce-project/static/media/logo.64bc1adee233868bd4e2bb07c620b6c0.svg",
+    "static/media/cart.svg": "/ktsstudio-e-commerce-project/static/media/cart.83e8b634513113fef0111e2df46161d2.svg",
+    "index.html": "/ktsstudio-e-commerce-project/index.html",
+    "static/media/filter.svg": "/ktsstudio-e-commerce-project/static/media/filter.3745b96e021127d76a5e68596bd2e822.svg",
+    "static/media/user.svg": "/ktsstudio-e-commerce-project/static/media/user.602259693f266cd9809bf5256f07eb35.svg",
+    "static/media/search.svg": "/ktsstudio-e-commerce-project/static/media/search.2685acf8739d6250661025603f3df7c9.svg",
+    "static/media/plus.svg": "/ktsstudio-e-commerce-project/static/media/plus.7f23ea68af141053459d86b34caa115a.svg",
+    "static/media/minus.svg": "/ktsstudio-e-commerce-project/static/media/minus.636ff53a219ab5064e6ad4fa6a7ea4d8.svg",
+    "static/media/next.svg": "/ktsstudio-e-commerce-project/static/media/next.ff996156449f03626edf1981f116962c.svg",
+    "static/media/prev.svg": "/ktsstudio-e-commerce-project/static/media/prev.34f5f6b5d698c1c3ad679fb84cd3934c.svg",
+    "static/media/cross.svg": "/ktsstudio-e-commerce-project/static/media/cross.b4661d5520efa1266292.svg",
+    "main.15cc6406.css.map": "/ktsstudio-e-commerce-project/static/css/main.15cc6406.css.map",
+    "main.b6715838.js.map": "/ktsstudio-e-commerce-project/static/js/main.b6715838.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.15cc6406.css",
+    "static/js/main.b6715838.js"
+  ]
+}

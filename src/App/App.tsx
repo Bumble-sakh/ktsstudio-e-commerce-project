@@ -8,11 +8,11 @@ import Cart from '@pages/Cart';
 import Categories from '@pages/Categories';
 import Product from '@pages/Product';
 import Products from '@pages/Products';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
 
 function App() {
   return (
-    <BrowserRouter>
+    <HashRouter>
       <Routes>
         <Route path={ROUTES.index} element={<Layout />}>
           <Route path={`${ROUTES.product}/:id`} element={<Product />} />
@@ -27,7 +27,7 @@ function App() {
           <Route index element={<Products />} />
         </Route>
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
 

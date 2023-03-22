@@ -1,20 +1,22 @@
-import { FC } from 'react';
+import { FC, useContext } from 'react';
 
 import minus from '@assets/images/minus.svg';
 import plus from '@assets/images/plus.svg';
 import Button from '@components/Button';
 import { ProductModel } from '@store/models/product';
-import rootStore from '@store/RootStore/instance';
 import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
 
 import styles from './ProductCard.module.scss';
+import { BuyNowPageContext } from '../BuyNow';
 
 type ProductCardProps = {
   product: ProductModel;
 };
 
 const ProductCard: FC<ProductCardProps> = ({ product }) => {
+  const context = useContext(BuyNowPageContext);
+
   return (
     <div className={styles.card}>
       <img
@@ -32,16 +34,16 @@ const ProductCard: FC<ProductCardProps> = ({ product }) => {
         <Button
           className={classNames({
             [styles.card__button]: true,
-            [styles.card__button_disable]: rootStore.buyNowStore.amount < 2,
+            [styles.card__button_disable]: context.buyNowStore.amount < 2,
           })}
-          onClick={rootStore.buyNowStore.decrementAmount}
+          onClick={context.buyNowStore.decrementAmount}
         >
           <img src={minus} alt="minus" />
         </Button>
-        <p className={styles.card__amount}>{rootStore.buyNowStore.amount}</p>
+        <p className={styles.card__amount}>{context.buyNowStore.amount}</p>
         <Button
           className={styles.card__button}
-          onClick={rootStore.buyNowStore.incrementAmount}
+          onClick={context.buyNowStore.incrementAmount}
         >
           <img src={plus} alt="plus" />
         </Button>

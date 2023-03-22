@@ -14,7 +14,9 @@ const User = () => {
         <li className={styles.list__item}>
           <NavLink to={ROUTES.cart}>
             <img src={cart} alt="cart" />
-            <div>{rootStore.cartStore.productsAmount}</div>
+            {!rootStore.cartStore.isEmpty && (
+              <div>{rootStore.cartStore.productsAmount}</div>
+            )}
           </NavLink>
         </li>
         <li className={styles.list__item}>

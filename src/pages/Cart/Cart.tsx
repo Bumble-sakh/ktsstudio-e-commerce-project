@@ -12,16 +12,23 @@ const Cart = () => {
         <h1 className={styles.title}>Cart</h1>
 
         <div className={styles.cart}>
-          <div className={styles.cards}>
-            {rootStore.cartStore.order.map((id) => (
-              <ProductCard
-                key={id}
-                product={rootStore.cartStore.entities[id].product}
-              />
-            ))}
-          </div>
-
-          <Total />
+          {!rootStore.cartStore.isEmpty ? (
+            <>
+              <div className={styles.cards}>
+                {rootStore.cartStore.order.map((id) => (
+                  <ProductCard
+                    key={id}
+                    product={rootStore.cartStore.entities[id].product}
+                  />
+                ))}
+              </div>
+              <Total />
+            </>
+          ) : (
+            <h2 className={styles.empty}>
+              Your cart is empty, open the catalog and choose the best products.
+            </h2>
+          )}
         </div>
       </div>
     </section>

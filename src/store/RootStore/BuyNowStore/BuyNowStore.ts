@@ -6,26 +6,45 @@ import axios from 'axios';
 import {
   action,
   computed,
+  get,
   makeObservable,
   observable,
   runInAction,
 } from 'mobx';
 
-type PrivateFields = '_product' | '_meta';
+type PrivateFields = '_product' | '_amount' | '_meta';
 
-export default class ProductStore implements ILocalStore {
-  private _meta = Meta.init;
+export default class BuyNowStore implements ILocalStore {
   private _product: ProductModel | null = null;
-  private static _instance: ProductStore = new ProductStore();
+  private _meta = Meta.init;
+  private _amount: number = 1;
 
   constructor() {
-    makeObservable<ProductStore, PrivateFields>(this, {
-      _product: observable.ref,
+    makeObservable<BuyNowStore, PrivateFields>(this, {
+      _product: observable,
       _meta: observable,
+      _amount: observable,
+      amount: computed,
+      price: computed,
+      total: computed,
       product: computed,
       meta: computed,
+      incrementAmount: action.bound,
+      decrementAmount: action.bound,
       getProduct: action.bound,
     });
+  }
+
+  get amount() {
+    return this._amount;
+  }
+
+  get price() {
+    return this._product ? get(this._product, 'price') : 0;
+  }
+
+  get total() {
+    return this.price * this.amount;
   }
 
   get product() {
@@ -34,6 +53,16 @@ export default class ProductStore implements ILocalStore {
 
   get meta() {
     return this._meta;
+  }
+
+  incrementAmount() {
+    this._amount += 1;
+  }
+
+  decrementAmount() {
+    if (this._amount > 1) {
+      this._amount -= 1;
+    }
   }
 
   async getProduct(id: string): Promise<void> {

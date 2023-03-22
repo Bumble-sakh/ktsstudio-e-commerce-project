@@ -62,6 +62,19 @@
     flex-direction: row;
     gap: 20px;
 
+    & a {
+      width: calc((100% - 20px) / 2);
+      flex-grow: 1;
+
+      & button {
+        width: 100%;
+      }
+
+      @include tab-media {
+        width: auto;
+      }
+    }
+
     & button {
       width: calc((100% - 20px) / 2);
       flex-grow: 1;

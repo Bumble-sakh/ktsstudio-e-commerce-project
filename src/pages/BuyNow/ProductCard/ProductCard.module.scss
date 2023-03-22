@@ -6,6 +6,7 @@
   flex-direction: row;
   align-items: center;
   gap: 10px;
+  margin-bottom: 2rem;
 
   @include mobile-landscape-media {
     flex-direction: column;
@@ -67,6 +68,19 @@
     & img {
       width: 24px;
       height: 24px;
+    }
+
+    &_disable {
+      opacity: 0.5;
+
+      &:hover {
+        cursor: auto;
+        opacity: 0.5;
+      }
+
+      &:active {
+        transform: none;
+      }
     }
   }
 

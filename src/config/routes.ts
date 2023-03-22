@@ -4,6 +4,7 @@ const ROUTES = {
   categories: '/categories',
   about: '/about',
   cart: '/cart',
+  buyNow: '/buy-now',
   all: '*',
 };
 

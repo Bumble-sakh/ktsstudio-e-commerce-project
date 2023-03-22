@@ -3,9 +3,11 @@ import React, { FC } from 'react';
 import minus from '@assets/images/minus.svg';
 import plus from '@assets/images/plus.svg';
 import Button from '@components/Button';
+import ROUTES from '@config/routes';
 import { ProductModel } from '@store/models/product';
 import rootStore from '@store/RootStore/instance';
 import { observer } from 'mobx-react-lite';
+import { NavLink } from 'react-router-dom';
 
 import styles from './ProductCard.module.scss';
 import Slider from '../Slider';
@@ -34,7 +36,10 @@ const ProductCard: FC<ProductCardType> = ({ product }) => {
         <div className={styles.product__subtitle}>{product?.description}</div>
         <div className={styles.product__price}>{`$${product?.price}`}</div>
         <div className={styles.product__buttons}>
-          <Button>Buy Now</Button>
+          <NavLink to={`${ROUTES.buyNow}/${product.id}`}>
+            <Button>Buy Now</Button>
+          </NavLink>
+
           {!rootStore.cartStore.productAmount && (
             <Button
               className={styles.product__buttons_white}

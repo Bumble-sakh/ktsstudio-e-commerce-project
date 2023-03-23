@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/ktsstudio-e-commerce-project/static/css/main.26aa21ee.css",
-    "main.js": "/ktsstudio-e-commerce-project/static/js/main.abc0b191.js",
+    "main.css": "/ktsstudio-e-commerce-project/static/css/main.166d09c0.css",
+    "main.js": "/ktsstudio-e-commerce-project/static/js/main.f5ea5030.js",
     "static/media/EudoxusSans-Bold.woff": "/ktsstudio-e-commerce-project/static/media/EudoxusSans-Bold.9e36cdea0e27e202b3ff.woff",
     "static/media/EudoxusSans-Medium.woff": "/ktsstudio-e-commerce-project/static/media/EudoxusSans-Medium.b8e22bfe93fc3c4204ff.woff",
     "static/media/EudoxusSans-ExtraBold.woff": "/ktsstudio-e-commerce-project/static/media/EudoxusSans-ExtraBold.87ebf43eae61d890f7c8.woff",
@@ -25,11 +25,11 @@
     "static/media/next.svg": "/ktsstudio-e-commerce-project/static/media/next.ff996156449f03626edf1981f116962c.svg",
     "static/media/prev.svg": "/ktsstudio-e-commerce-project/static/media/prev.34f5f6b5d698c1c3ad679fb84cd3934c.svg",
     "static/media/cross.svg": "/ktsstudio-e-commerce-project/static/media/cross.b4661d5520efa1266292.svg",
-    "main.26aa21ee.css.map": "/ktsstudio-e-commerce-project/static/css/main.26aa21ee.css.map",
-    "main.abc0b191.js.map": "/ktsstudio-e-commerce-project/static/js/main.abc0b191.js.map"
+    "main.166d09c0.css.map": "/ktsstudio-e-commerce-project/static/css/main.166d09c0.css.map",
+    "main.f5ea5030.js.map": "/ktsstudio-e-commerce-project/static/js/main.f5ea5030.js.map"
   },
   "entrypoints": [
-    "static/css/main.26aa21ee.css",
-    "static/js/main.abc0b191.js"
+    "static/css/main.166d09c0.css",
+    "static/js/main.f5ea5030.js"
   ]
 }

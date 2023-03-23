@@ -14,11 +14,14 @@ const CategoryCard: FC<CategoryCardType> = ({ category }) => {
   return (
     <li className={styles.card}>
       <Link to={`${ROUTES.index}?categoryId=${category.id}`}>
-        <img
-          src={category.image}
-          alt={category.name}
-          className={styles.card__image}
-        />
+        <div className={styles['card__image-wrapper']}>
+          <img
+            src={category.image}
+            alt={category.name}
+            className={styles.card__image}
+          />
+        </div>
+
         <div className={styles.card__title}>{category.name}</div>
       </Link>
     </li>

@@ -14,11 +14,14 @@ const Card: React.FC<CardProps> = ({ product }) => {
   return (
     <li className={styles.card}>
       <Link to={`${ROUTES.product}/${product.id}`}>
-        <img
-          src={product.images[0]}
-          alt="Product"
-          className={styles.card__image}
-        />
+        <div className={styles['card__image-wrapper']}>
+          <img
+            src={product.images[0]}
+            alt="Product"
+            className={styles.card__image}
+          />
+        </div>
+
         {product.category ? (
           <div className={styles.card__category}>{product.category.name}</div>
         ) : null}
